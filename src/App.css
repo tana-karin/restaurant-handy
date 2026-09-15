@@ -1,0 +1,1032 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  background: #f3f4f6;
+  color: #222;
+
+  overflow: hidden;
+}
+
+button,
+input {
+  font-family: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* ==============================
+   アプリ全体
+============================== */
+
+.app {
+  width: 100%;
+  max-width: 600px;
+  height: 100vh;
+  min-height: 100vh;
+
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+
+  background: #fff;
+}
+
+/* ==============================
+   上メニュー
+============================== */
+
+.top-menu {
+  flex: 0 0 56px;
+
+  display: flex;
+
+  height: 56px;
+
+  border-bottom: 1px solid #ddd;
+
+  background: #fff;
+}
+
+.top-menu button {
+  flex: 1;
+
+  height: 56px;
+
+  border: 0;
+  border-bottom: 3px solid transparent;
+
+  background: #fff;
+
+  color: #777;
+
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.top-menu button.active {
+  color: #f97316;
+
+  border-bottom-color: #f97316;
+}
+
+/* ==============================
+   注文画面
+============================== */
+
+.order-screen {
+  flex: 1;
+  min-height: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+}
+
+/* ==============================
+   共通タイトル
+============================== */
+
+.section-title {
+  flex: 0 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 42px;
+
+  border-bottom: 1px solid #eee;
+
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* ==============================
+   注文内容
+============================== */
+
+.order-panel {
+  flex: 1 1 50%;
+  min-height: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+
+  border-bottom: 2px solid #eee;
+
+  background: #fff;
+}
+
+/*
+   注文リストだけスクロールする
+*/
+.order-list {
+  flex: 1;
+  min-height: 0;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  padding: 0 12px;
+
+  overscroll-behavior: contain;
+
+  -webkit-overflow-scrolling: touch;
+}
+
+/* スクロールバーを少し細く */
+
+.order-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.order-list::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
+
+/* ==============================
+   注文が空の場合
+============================== */
+
+.empty-order {
+  padding: 25px 10px;
+
+  text-align: center;
+
+  color: #999;
+
+  font-size: 14px;
+}
+
+/* ==============================
+   注文商品
+============================== */
+
+.order-item {
+  min-height: 62px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  padding: 8px 0;
+
+  border-bottom: 1px solid #eee;
+}
+
+/* 商品名・価格 */
+
+.order-item-info {
+  min-width: 0;
+
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.order-item-name {
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.order-item-price {
+  font-size: 13px;
+
+  color: #777;
+}
+
+/* ==============================
+   数量
+============================== */
+
+.quantity-control {
+  flex: 0 0 auto;
+
+  display: flex;
+  align-items: center;
+
+  gap: 4px;
+}
+
+.quantity-control button {
+  width: 30px;
+  height: 30px;
+
+  padding: 0;
+
+  border: 1px solid #ccc;
+  border-radius: 5px;
+
+  background: #fff;
+
+  font-size: 18px;
+  line-height: 1;
+}
+
+.quantity-control button:active {
+  background: #f3f4f6;
+
+  transform: scale(0.95);
+}
+
+.quantity-control span {
+  min-width: 22px;
+
+  text-align: center;
+
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* ==============================
+   注文下部
+============================== */
+
+.order-bottom {
+  flex: 0 0 auto;
+
+  padding: 7px 12px 10px;
+
+  background: #fff;
+}
+
+/* ==============================
+   合計
+============================== */
+
+.total-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 7px;
+
+  font-size: 16px;
+}
+
+.total-row strong {
+  font-size: 20px;
+
+  color: #f97316;
+}
+
+/* ==============================
+   注文確定
+============================== */
+
+.confirm-button {
+  width: 100%;
+  height: 42px;
+
+  border: 0;
+  border-radius: 8px;
+
+  background: #f97316;
+
+  color: #fff;
+
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.confirm-button:active {
+  transform: scale(0.98);
+}
+
+.confirm-button:disabled {
+  background: #ccc;
+
+  cursor: default;
+}
+
+/* ==============================
+   商品メニュー
+============================== */
+
+.menu-panel {
+  flex: 1 1 50%;
+  min-height: 0;
+
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+
+  background: #fff;
+
+  touch-action: pan-y;
+}
+
+/* ==============================
+   カテゴリーヘッダー
+============================== */
+
+.category-header {
+  flex: 0 0 70px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  height: 70px;
+
+  border-bottom: 1px solid #eee;
+}
+
+/* 左右ボタン */
+
+.category-arrow {
+  flex: 0 0 40px;
+
+  width: 40px;
+  height: 40px;
+
+  margin: 0 8px;
+
+  border: 1px solid #ddd;
+  border-radius: 6px;
+
+  background: #fff;
+
+  font-size: 20px;
+}
+
+.category-arrow:active {
+  background: #f3f4f6;
+
+  transform: scale(0.95);
+}
+
+/* カテゴリー名 */
+
+.category-title {
+  flex: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 100%;
+
+  font-size: 20px;
+  font-weight: 700;
+
+  color: #333;
+
+  text-align: center;
+}
+
+/* ==============================
+   商品一覧
+============================== */
+
+.menu-scroll {
+  flex: 1;
+  min-height: 0;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 8px;
+
+  align-content: start;
+
+  padding: 8px 10px 45px;
+
+  overscroll-behavior: contain;
+
+  -webkit-overflow-scrolling: touch;
+}
+
+/* スクロールバー */
+
+.menu-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.menu-scroll::-webkit-scrollbar-thumb {
+  background: #ccc;
+
+  border-radius: 10px;
+}
+
+/* ==============================
+   商品ボタン
+============================== */
+
+.menu-item {
+  width: 100%;
+  height: 90px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 5px;
+
+  padding: 8px;
+
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+
+  background: #fff;
+
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.05);
+
+  font-size: 16px;
+  font-weight: 600;
+
+  text-align: center;
+}
+
+.menu-item span:first-child {
+  overflow: hidden;
+
+  max-width: 100%;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.menu-item span:last-child {
+  font-size: 14px;
+  font-weight: 700;
+
+  color: #f97316;
+}
+
+.menu-item:active {
+  background: #fff7ed;
+
+  transform: scale(0.97);
+}
+
+/* ==============================
+   カテゴリースライド
+============================== */
+
+.menu-scroll.slide-left {
+  animation: slideLeft 0.22s ease;
+}
+
+.menu-scroll.slide-right {
+  animation: slideRight 0.22s ease;
+}
+
+@keyframes slideLeft {
+  from {
+    transform: translateX(25px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideRight {
+  from {
+    transform: translateX(-25px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* ==============================
+   ページ表示
+============================== */
+
+.page-indicator {
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: 8px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 5px;
+
+  pointer-events: none;
+}
+
+.page-indicator span {
+  width: 7px;
+  height: 7px;
+
+  display: block;
+
+  border-radius: 50%;
+
+  background: #ccc;
+}
+
+.page-indicator span.active {
+  background: #f97316;
+}
+
+/* ==============================
+   履歴画面
+============================== */
+
+.history-screen {
+  flex: 1;
+  min-height: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+}
+
+.history-list {
+  flex: 1;
+  min-height: 0;
+
+  overflow-y: auto;
+
+  padding: 12px;
+
+  -webkit-overflow-scrolling: touch;
+}
+
+.empty-history {
+  padding: 30px 10px;
+
+  text-align: center;
+
+  color: #999;
+}
+
+/* ==============================
+   履歴カード
+============================== */
+
+.history-card {
+  margin-bottom: 12px;
+
+  padding: 12px;
+
+  border: 1px solid #eee;
+  border-radius: 10px;
+
+  background: #fff;
+}
+
+/* 履歴ヘッダー */
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 10px;
+
+  margin-bottom: 8px;
+}
+
+.history-header span {
+  font-size: 12px;
+
+  color: #888;
+}
+
+.history-header strong {
+  font-size: 17px;
+
+  color: #f97316;
+}
+
+/* 履歴商品 */
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+
+  padding: 6px 0;
+
+  border-bottom: 1px solid #f1f1f1;
+
+  font-size: 14px;
+}
+
+.history-item:last-child {
+  border-bottom: 0;
+}
+
+/* ==============================
+   商品設定画面
+============================== */
+
+.settings-screen {
+  flex: 1;
+  min-height: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+}
+
+.settings-content {
+  flex: 1;
+  min-height: 0;
+
+  overflow-y: auto;
+
+  padding: 12px;
+
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ==============================
+   設定セクション
+============================== */
+
+.settings-section {
+  margin-bottom: 20px;
+
+  padding: 12px;
+
+  border: 1px solid #eee;
+  border-radius: 10px;
+
+  background: #fafafa;
+}
+
+.settings-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 8px;
+
+  margin-bottom: 10px;
+}
+
+.settings-section-header h2 {
+  margin: 0;
+
+  font-size: 17px;
+}
+
+/* ==============================
+   追加ボタン
+============================== */
+
+.add-button {
+  flex: 0 0 auto;
+
+  padding: 8px 10px;
+
+  border: 0;
+  border-radius: 7px;
+
+  background: #f97316;
+
+  color: #fff;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.add-button:active {
+  transform: scale(0.97);
+}
+
+/* ==============================
+   カテゴリー設定
+============================== */
+
+.category-settings-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.category-setting-item {
+  min-height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 8px;
+
+  padding: 8px 0;
+
+  border-bottom: 1px solid #eee;
+}
+
+.category-setting-item:last-child {
+  border-bottom: 0;
+}
+
+.category-setting-item > span {
+  font-weight: 600;
+}
+
+/* ==============================
+   商品設定
+============================== */
+
+.product-settings-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.product-setting-item {
+  padding: 10px 0;
+
+  border-bottom: 1px solid #eee;
+}
+
+.product-setting-item:last-child {
+  border-bottom: 0;
+}
+
+.product-setting-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  margin-bottom: 7px;
+}
+
+.product-setting-info span {
+  min-width: 0;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  font-weight: 600;
+}
+
+.product-setting-info strong {
+  flex: 0 0 auto;
+
+  color: #f97316;
+}
+
+/* ==============================
+   設定操作ボタン
+============================== */
+
+.setting-actions {
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 5px;
+}
+
+.setting-actions button {
+  padding: 6px 9px;
+
+  border: 0;
+  border-radius: 6px;
+
+  background: #eee;
+
+  font-size: 12px;
+}
+
+.setting-actions button:last-child {
+  background: #fee2e2;
+
+  color: #dc2626;
+}
+
+/* ==============================
+   編集フォーム
+============================== */
+
+.edit-form {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 6px;
+}
+
+.edit-form input {
+  flex: 1 1 120px;
+
+  min-width: 0;
+
+  height: 36px;
+
+  padding: 0 8px;
+
+  border: 1px solid #ddd;
+  border-radius: 6px;
+
+  background: #fff;
+
+  font-size: 14px;
+}
+
+.edit-form button {
+  height: 36px;
+
+  padding: 0 10px;
+
+  border: 0;
+  border-radius: 6px;
+
+  background: #eee;
+
+  font-size: 13px;
+}
+
+.edit-form button:first-of-type {
+  background: #f97316;
+
+  color: #fff;
+}
+
+/* ==============================
+   商品がない場合
+============================== */
+
+.empty-settings {
+  padding: 20px 10px;
+
+  text-align: center;
+
+  color: #999;
+
+  font-size: 14px;
+}
+
+/* ==============================
+   モーダル
+============================== */
+
+.modal-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 100;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.modal {
+  width: 100%;
+  max-width: 400px;
+
+  padding: 20px;
+
+  border-radius: 12px;
+
+  background: #fff;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.modal h2 {
+  margin: 0 0 15px;
+
+  font-size: 19px;
+}
+
+.modal input {
+  width: 100%;
+
+  height: 42px;
+
+  margin-bottom: 10px;
+
+  padding: 0 10px;
+
+  border: 1px solid #ddd;
+  border-radius: 7px;
+
+  font-size: 15px;
+}
+
+.modal-actions {
+  display: flex;
+
+  gap: 8px;
+
+  margin-top: 8px;
+}
+
+.modal-actions button {
+  flex: 1;
+
+  height: 42px;
+
+  border: 0;
+  border-radius: 7px;
+
+  background: #eee;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.modal-actions button:first-child {
+  background: #f97316;
+
+  color: #fff;
+}
+
+/* ==============================
+   スマホ
+============================== */
+
+@media (max-width: 600px) {
+  .app {
+    width: 100%;
+    max-width: none;
+  }
+
+  /*
+     スマホでは注文内容と商品一覧を
+     きっちり上下半分程度にする
+  */
+
+  .order-panel,
+  .menu-panel {
+    flex-basis: 50%;
+  }
+
+  .menu-item {
+    height: 90px;
+  }
+}
+
+/* ==============================
+   大きい画面
+============================== */
+
+@media (min-width: 601px) {
+  .app {
+    box-shadow:
+      0 0 20px rgba(0, 0, 0, 0.08);
+  }
+}
