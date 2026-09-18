@@ -1,1052 +1,1789 @@
 import { useEffect, useRef, useState } from 'react'
 import './App.css'
 
+const APP_DATA_VERSION = 5
+
+const CATEGORIES_STORAGE_KEY = `categories_v${APP_DATA_VERSION}`
+const SELECTED_CATEGORY_STORAGE_KEY = `selectedCategory_v${APP_DATA_VERSION}`
+const ORDER_HISTORY_STORAGE_KEY = `orderHistory_v${APP_DATA_VERSION}`
+const SOLD_OUT_STORAGE_KEY = `soldOut_v${APP_DATA_VERSION}`
+
+/* =====================================
+   初期商品データ
+===================================== */
+
 const defaultCategories = [
   {
     id: 1,
-    name: '料理',
+    name: '化粧缶',
     items: [
-      { id: 1, name: 'からあげ', price: 500 },
-      { id: 2, name: '焼き鳥', price: 600 },
-      { id: 3, name: '枝豆', price: 300 },
-      { id: 4, name: 'ポテト', price: 400 },
-      { id: 5, name: 'だし巻き卵', price: 450 },
-      { id: 6, name: '刺身盛り', price: 1200 },
-      { id: 7, name: '冷奴', price: 300 },
-      { id: 8, name: 'おにぎり', price: 350 },
+      {
+        id: 1,
+        name: '001_味の宴',
+        price: 3600,
+      },
+      {
+        id: 2,
+        name: '002_味くらべ',
+        price: 2500,
+      },
+      {
+        id: 3,
+        name: '003_ころもち(個々包装)',
+        price: 2700,
+      },
+      {
+        id: 4,
+        name: '004_ころもち(ばら詰)',
+        price: 2700,
+      },
+      {
+        id: 5,
+        name: '005_華の友',
+        price: 2700,
+      },
+      {
+        id: 6,
+        name: '006_四季の集',
+        price: 2500,
+      },
+      {
+        id: 7,
+        name: '007_蓬莱',
+        price: 2500,
+      },
+      {
+        id: 8,
+        name: '009_マヨネーズ風味',
+        price: 2500,
+      },
+      {
+        id: 9,
+        name: '010_海老サラダ',
+        price: 2500,
+      },
+      {
+        id: 10,
+        name: '011_田舎焼',
+        price: 2500,
+      },
+      {
+        id: 11,
+        name: '013_飛鳥',
+        price: 2500,
+      },
     ],
   },
+
   {
     id: 2,
-    name: '飲み物',
+    name: '小袋（10袋入）ケース',
     items: [
-      { id: 101, name: '生ビール', price: 550 },
-      { id: 102, name: 'ハイボール', price: 500 },
-      { id: 103, name: 'レモンサワー', price: 450 },
-      { id: 104, name: 'ウーロン茶', price: 300 },
-      { id: 105, name: 'コーラ', price: 300 },
-      { id: 106, name: 'ジンジャーエール', price: 300 },
+      {
+        id: 101,
+        name: '100_袋入 詰め合わせ',
+        price: 3600,
+      },
+      {
+        id: 102,
+        name: '104_袋入 ころもち',
+        price: 3800,
+      },
+      {
+        id: 103,
+        name: '105_袋入 華の友',
+        price: 3800,
+      },
+      {
+        id: 104,
+        name: '109_袋入 マヨネーズ風味',
+        price: 3600,
+      },
+      {
+        id: 105,
+        name: '110_袋入 海老サラダ',
+        price: 3600,
+      },
+      {
+        id: 106,
+        name: '111_袋入 田舎焼',
+        price: 3600,
+      },
+      {
+        id: 107,
+        name: '114_袋入 松しぐれ',
+        price: 3600,
+      },
     ],
   },
+
   {
     id: 3,
-    name: 'デザート',
+    name: '限定商品・大箱',
     items: [
-      { id: 201, name: 'アイス', price: 300 },
-      { id: 202, name: 'プリン', price: 350 },
-      { id: 203, name: 'ケーキ', price: 450 },
-      { id: 204, name: 'シャーベット', price: 300 },
+      {
+        id: 201,
+        name: '433_高山「極」甘醤油',
+        price: 1300,
+      },
+      {
+        id: 202,
+        name: '425_梅サラダ',
+        price: 600,
+      },
+      {
+        id: 203,
+        name: '418_うるちサラダ',
+        price: 600,
+      },
+      {
+        id: 204,
+        name: '420_昔風味 塩味',
+        price: 600,
+      },
+      {
+        id: 205,
+        name: '421_昔風味 黒砂糖味',
+        price: 600,
+      },
+      {
+        id: 206,
+        name: '402_大箱 味くらべ',
+        price: 6500,
+      },
+      {
+        id: 207,
+        name: '403_大箱 ころもち(個々包装)',
+        price: 7000,
+      },
+      {
+        id: 208,
+        name: '404_大箱 ころもち(ばら詰)',
+        price: 7500,
+      },
+      {
+        id: 209,
+        name: '407_大箱 蓬莱',
+        price: 6000,
+      },
+    ],
+  },
+
+  {
+    id: 4,
+    name: '送料',
+    items: [
+      {
+        id: 301,
+        name: '近畿・中国',
+        price: 500,
+      },
+      {
+        id: 302,
+        name: '関東・四国・九州',
+        price: 600,
+      },
+      {
+        id: 303,
+        name: '中部(愛知・石川・岐阜・静岡・富山・福井・三重)',
+        price: 500,
+      },
+      {
+        id: 304,
+        name: '中部(長野・新潟)',
+        price: 600,
+      },
+      {
+        id: 305,
+        name: '東北',
+        price: 900,
+      },
+      {
+        id: 306,
+        name: '北海道・沖縄',
+        price: 1300,
+      },
+    ],
+  },
+
+  {
+    id: 5,
+    name: '袋・パッキン・その他',
+    items: [
+      {
+        id: 401,
+        name: '971_紙袋 小',
+        price: 40,
+      },
+      {
+        id: 402,
+        name: '972_紙袋 大',
+        price: 60,
+      },
+      {
+        id: 403,
+        name: '973_ビニール袋 小(5枚)',
+        price: 30,
+      },
+      {
+        id: 404,
+        name: '974_ビニール袋 大(5枚)',
+        price: 60,
+      },
+      {
+        id: 405,
+        name: '981_1缶用パッキン',
+        price: 80,
+      },
+      {
+        id: 406,
+        name: '982_2缶用パッキン',
+        price: 100,
+      },
+      {
+        id: 407,
+        name: '983_3缶用パッキン',
+        price: 110,
+      },
+      {
+        id: 408,
+        name: '984_4缶用パッキン',
+        price: 130,
+      },
+      {
+        id: 409,
+        name: '986_6缶用パッキン',
+        price: 150,
+      },
+      {
+        id: 410,
+        name: '952_包装紙',
+        price: 30,
+      },
+    ],
+  },
+
+  {
+    id: 6,
+    name: '割れおかき',
+    items: [
+      {
+        id: 501,
+        name: '割れ 手赤',
+        price: 3500,
+      },
+      {
+        id: 502,
+        name: '割れ 手白',
+        price: 3500,
+      },
+      {
+        id: 503,
+        name: '割れ 蓬莱',
+        price: 3500,
+      },
+      {
+        id: 504,
+        name: '割れ 老松',
+        price: 3500,
+      },
+      {
+        id: 505,
+        name: '割れ 浦島',
+        price: 3500,
+      },
+      {
+        id: 506,
+        name: '割れ 豆かき',
+        price: 3500,
+      },
+      {
+        id: 507,
+        name: '割れ 田舎焼',
+        price: 3000,
+      },
+      {
+        id: 508,
+        name: '割れ 海老サラダ',
+        price: 3000,
+      },
+    ],
+  },
+
+  {
+    id: 7,
+    name: '詰替パック',
+    items: [
+      {
+        id: 601,
+        name: '304_詰替 ころもち',
+        price: 1500,
+      },
+      {
+        id: 602,
+        name: '309_詰替 マヨネーズ風味',
+        price: 1300,
+      },
+      {
+        id: 603,
+        name: '310_詰替 海老サラダ',
+        price: 1300,
+      },
+      {
+        id: 604,
+        name: '311_詰替 田舎焼',
+        price: 1300,
+      },
+      {
+        id: 605,
+        name: '312_詰替 蓬莱・老松・浦島',
+        price: 1300,
+      },
+      {
+        id: 606,
+        name: '314_詰替 松しぐれ',
+        price: 1300,
+      },
+      {
+        id: 607,
+        name: '316_詰替 豆かき',
+        price: 1900,
+      },
     ],
   },
 ]
 
+/* =====================================
+   送料設定
+===================================== */
+
+const shippingOptions = {
+  '近畿・中国': [
+    {
+      id: 'kinki-1',
+      name: '1缶',
+      price: 500,
+    },
+    {
+      id: 'kinki-2-3',
+      name: '2～3缶',
+      price: 600,
+    },
+    {
+      id: 'kinki-4-6',
+      name: '4～6缶',
+      price: 700,
+    },
+    {
+      id: 'kinki-7-8',
+      name: '7～8缶',
+      price: 800,
+    },
+  ],
+
+  '関東・四国・九州': [
+    {
+      id: 'kanto-1',
+      name: '1缶',
+      price: 600,
+    },
+    {
+      id: 'kanto-2-3',
+      name: '2～3缶',
+      price: 700,
+    },
+    {
+      id: 'kanto-4-6',
+      name: '4～6缶',
+      price: 800,
+    },
+    {
+      id: 'kanto-7-8',
+      name: '7～8缶',
+      price: 900,
+    },
+  ],
+
+  '中部(愛知・石川・岐阜・静岡・富山・福井・三重)': [
+    {
+      id: 'chubu-aichi-1',
+      name: '1缶',
+      price: 500,
+    },
+    {
+      id: 'chubu-aichi-2-3',
+      name: '2～3缶',
+      price: 600,
+    },
+    {
+      id: 'chubu-aichi-4-6',
+      name: '4～6缶',
+      price: 700,
+    },
+    {
+      id: 'chubu-aichi-7-8',
+      name: '7～8缶',
+      price: 800,
+    },
+  ],
+
+  '中部(長野・新潟)': [
+    {
+      id: 'chubu-nagano-1',
+      name: '1缶',
+      price: 600,
+    },
+    {
+      id: 'chubu-nagano-2-3',
+      name: '2～3缶',
+      price: 700,
+    },
+    {
+      id: 'chubu-nagano-4-6',
+      name: '4～6缶',
+      price: 800,
+    },
+    {
+      id: 'chubu-nagano-7-8',
+      name: '7～8缶',
+      price: 900,
+    },
+  ],
+
+  東北: [
+    {
+      id: 'tohoku-1',
+      name: '1缶',
+      price: 900,
+    },
+    {
+      id: 'tohoku-2-3',
+      name: '2～3缶',
+      price: 900,
+    },
+    {
+      id: 'tohoku-4-6',
+      name: '4～6缶',
+      price: 1000,
+    },
+    {
+      id: 'tohoku-7-8',
+      name: '7～8缶',
+      price: 1000,
+    },
+  ],
+
+  '北海道・沖縄': [
+    {
+      id: 'hokkaido-1',
+      name: '1缶',
+      price: 1300,
+    },
+    {
+      id: 'hokkaido-2-3',
+      name: '2～3缶',
+      price: 1300,
+    },
+    {
+      id: 'hokkaido-4-6',
+      name: '4～6缶',
+      price: 1400,
+    },
+    {
+      id: 'hokkaido-7-8',
+      name: '7～8缶',
+      price: 1400,
+    },
+  ],
+}
+
+/* =====================================
+   localStorage
+===================================== */
+
+function loadStorage(key, fallback) {
+  try {
+    const saved = localStorage.getItem(key)
+
+    if (saved === null) {
+      return fallback
+    }
+
+    return JSON.parse(saved)
+  } catch {
+    return fallback
+  }
+}
+
+/* =====================================
+   商品番号を取得
+
+   ① 商品名の最初の3桁がある場合
+      001_味の宴 → 001
+      425_梅サラダ → 425
+
+   ② 商品名に3桁がない場合
+      商品IDを使用
+      id:405 → 405
+===================================== */
+
+function getProductCode(product) {
+  if (!product) {
+    return null
+  }
+
+  const name = product.name || ''
+
+  const match = name.match(/^(\d{3})/)
+
+  if (match) {
+    return match[1]
+  }
+
+  if (
+    product.id !== undefined &&
+    product.id !== null
+  ) {
+    return String(product.id)
+  }
+
+  return null
+}
+
+/* =====================================
+   商品画像のパス
+
+   001 → /products/001.png
+   425 → /products/425.png
+   405 → /products/405.png
+===================================== */
+
+function getProductImage(product) {
+  const code = getProductCode(product)
+
+  if (!code) {
+    return null
+  }
+
+  return `/products/${code}.png`
+}
+
+/* =====================================
+   カテゴリ名表示
+===================================== */
+
+function renderCategoryName(category) {
+  if (!category) {
+    return ''
+  }
+
+  if (
+    category.name ===
+    '小袋（10袋入）ケース'
+  ) {
+    return (
+      <>
+        小袋（10袋入）
+        <br />
+        ケース
+      </>
+    )
+  }
+
+  if (
+    category.name ===
+    '袋・パッキン・その他'
+  ) {
+    return (
+      <>
+        袋・パッキン
+        <br />
+        その他
+      </>
+    )
+  }
+
+  return category.name
+}
+
+/* =====================================
+   App
+===================================== */
+
 function App() {
-  const [screen, setScreen] = useState('order')
+  const [screen, setScreen] =
+    useState('order')
 
-  const [categories, setCategories] = useState(() => {
-    const saved = localStorage.getItem('categories')
+  const [categories, setCategories] =
+    useState(() =>
+      loadStorage(
+        CATEGORIES_STORAGE_KEY,
+        defaultCategories,
+      ),
+    )
 
-    if (saved) {
-      return JSON.parse(saved)
-    }
-
-    return defaultCategories
-  })
-
-  const [selectedCategory, setSelectedCategory] = useState(() => {
-    const saved = localStorage.getItem('selectedCategory')
-
-    if (saved) {
-      return Number(saved)
-    }
-
-    return defaultCategories[0].id
-  })
+  const [selectedCategory, setSelectedCategory] =
+    useState(() =>
+      loadStorage(
+        SELECTED_CATEGORY_STORAGE_KEY,
+        1,
+      ),
+    )
 
   const [order, setOrder] = useState([])
 
-  const [orderHistory, setOrderHistory] = useState(() => {
-    const saved = localStorage.getItem('orderHistory')
+  const [orderHistory, setOrderHistory] =
+    useState(() =>
+      loadStorage(
+        ORDER_HISTORY_STORAGE_KEY,
+        [],
+      ),
+    )
 
-    if (saved) {
-      return JSON.parse(saved)
-    }
+  const [soldOut, setSoldOut] =
+    useState(() =>
+      loadStorage(
+        SOLD_OUT_STORAGE_KEY,
+        {},
+      ),
+    )
 
-    return []
-  })
+  const [
+    selectedShippingRegion,
+    setSelectedShippingRegion,
+  ] = useState(null)
 
-  const [editingCategoryId, setEditingCategoryId] = useState(null)
-  const [categoryName, setCategoryName] = useState('')
+  const [slideDirection, setSlideDirection] =
+    useState('')
 
-  const [editingProduct, setEditingProduct] = useState(null)
-  const [productName, setProductName] = useState('')
-  const [productPrice, setProductPrice] = useState('')
+  const [latestAddedProduct, setLatestAddedProduct] =
+    useState(null)
 
-  const [slideDirection, setSlideDirection] = useState('none')
+  const orderScrollRef =
+    useRef(null)
 
-  // 注文内容のスクロール用
-  const orderListRef = useRef(null)
+  const touchStartX =
+    useRef(0)
 
-  // 前回の注文商品数
-  const previousOrderLengthRef = useRef(order.length)
+  const touchStartY =
+    useRef(0)
 
-  // ==============================
-  // localStorage保存
-  // ==============================
+  /* =====================================
+     localStorage保存
+  ===================================== */
 
   useEffect(() => {
-    localStorage.setItem('categories', JSON.stringify(categories))
+    localStorage.setItem(
+      CATEGORIES_STORAGE_KEY,
+      JSON.stringify(categories),
+    )
   }, [categories])
 
   useEffect(() => {
     localStorage.setItem(
-      'selectedCategory',
-      String(selectedCategory),
+      SELECTED_CATEGORY_STORAGE_KEY,
+      JSON.stringify(selectedCategory),
     )
   }, [selectedCategory])
 
   useEffect(() => {
     localStorage.setItem(
-      'orderHistory',
+      ORDER_HISTORY_STORAGE_KEY,
       JSON.stringify(orderHistory),
     )
   }, [orderHistory])
 
-  // ==============================
-  // 商品が新しく追加されたら
-  // 注文内容を自動スクロール
-  // ==============================
-
   useEffect(() => {
-    const previousLength = previousOrderLengthRef.current
+    localStorage.setItem(
+      SOLD_OUT_STORAGE_KEY,
+      JSON.stringify(soldOut),
+    )
+  }, [soldOut])
 
-    if (order.length > previousLength) {
-      setTimeout(() => {
-        if (orderListRef.current) {
-          orderListRef.current.scrollTo({
-            top: orderListRef.current.scrollHeight,
-            behavior: 'smooth',
-          })
-        }
-      }, 50)
-    }
-
-    previousOrderLengthRef.current = order.length
-  }, [order])
-
-  // ==============================
-  // 現在のカテゴリ
-  // ==============================
+  /* =====================================
+     現在のカテゴリ
+  ===================================== */
 
   const currentCategory =
     categories.find(
-      (category) => category.id === selectedCategory,
+      (category) =>
+        category.id ===
+        selectedCategory,
     ) || categories[0]
 
-  // ==============================
-  // 合計金額
-  // ==============================
+  const isShippingCategory =
+    currentCategory?.id === 4
 
-  const totalPrice = order.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0,
-  )
+  /* =====================================
+     注文合計
+  ===================================== */
 
-  // ==============================
-  // 商品追加
-  // ==============================
+  const totalAmount =
+    order.reduce(
+      (sum, item) =>
+        sum +
+        item.price *
+          item.quantity,
+      0,
+    )
 
-  const addToOrder = (product) => {
-    setOrder((currentOrder) => {
-      const existing = currentOrder.find(
-        (item) => item.id === product.id,
-      )
+  /* =====================================
+     注文リスト自動スクロール
+  ===================================== */
+
+  useEffect(() => {
+    if (
+      orderScrollRef.current
+    ) {
+      orderScrollRef.current.scrollTop =
+        orderScrollRef.current.scrollHeight
+    }
+  }, [order])
+
+  /* =====================================
+     商品を注文に追加
+  ===================================== */
+
+  function addToOrder(product) {
+    if (soldOut[product.id]) {
+      return
+    }
+
+    setOrder((current) => {
+      const existing =
+        current.find(
+          (item) =>
+            item.id ===
+            product.id,
+        )
 
       if (existing) {
-        return currentOrder.map((item) =>
-          item.id === product.id
-            ? {
-                ...item,
-                quantity: item.quantity + 1,
-              }
-            : item,
+        return current.map(
+          (item) =>
+            item.id ===
+            product.id
+              ? {
+                  ...item,
+                  quantity:
+                    item.quantity +
+                    1,
+                }
+              : item,
         )
       }
 
       return [
-        ...currentOrder,
+        ...current,
         {
-          ...product,
+          id: product.id,
+          name: product.name,
+          price: product.price,
           quantity: 1,
         },
       ]
     })
+
+    const existing =
+      order.find(
+        (item) =>
+          item.id === product.id,
+      )
+
+    setLatestAddedProduct({
+      name: product.name,
+      quantity:
+        existing?.quantity
+          ? existing.quantity + 1
+          : 1,
+    })
   }
 
-  // ==============================
-  // 数量変更
-  // ==============================
+  /* =====================================
+     数量変更
+  ===================================== */
 
-  const changeQuantity = (productId, amount) => {
-    setOrder((currentOrder) =>
-      currentOrder
-        .map((item) => {
-          if (item.id !== productId) {
-            return item
-          }
-
-          return {
-            ...item,
-            quantity: item.quantity + amount,
-          }
-        })
-        .filter((item) => item.quantity > 0),
+  function changeQuantity(
+    id,
+    amount,
+  ) {
+    setOrder((current) =>
+      current
+        .map((item) =>
+          item.id === id
+            ? {
+                ...item,
+                quantity:
+                  item.quantity +
+                  amount,
+              }
+            : item,
+        )
+        .filter(
+          (item) =>
+            item.quantity > 0,
+        ),
     )
   }
 
-  // ==============================
-  // 注文確定
-  // ==============================
+  /* =====================================
+     注文確定
+  ===================================== */
 
-  const confirmOrder = () => {
+  function confirmOrder() {
     if (order.length === 0) {
       return
     }
 
     const newHistory = {
       id: Date.now(),
-      date: new Date().toLocaleString('ja-JP'),
+      date: new Date().toLocaleString(
+        'ja-JP',
+      ),
       items: order,
-      total: totalPrice,
+      total: totalAmount,
     }
 
-    setOrderHistory((currentHistory) => [
-      newHistory,
-      ...currentHistory,
-    ])
+    setOrderHistory(
+      (current) => [
+        newHistory,
+        ...current,
+      ],
+    )
 
     setOrder([])
 
-    // 次回追加時の判定をリセット
-    previousOrderLengthRef.current = 0
+    setLatestAddedProduct(null)
+
+    setSelectedShippingRegion(null)
+
+    setScreen('order')
   }
 
-  // ==============================
-  // カテゴリ移動
-  // ==============================
+  /* =====================================
+     履歴削除
+  ===================================== */
 
-  const moveCategory = (direction) => {
-    if (categories.length <= 1) {
+  function deleteHistory(id) {
+    if (
+      !window.confirm(
+        'この履歴を削除しますか？',
+      )
+    ) {
       return
     }
 
-    const currentIndex = categories.findIndex(
-      (category) => category.id === selectedCategory,
+    setOrderHistory(
+      (current) =>
+        current.filter(
+          (item) =>
+            item.id !== id,
+        ),
     )
+  }
+
+  /* =====================================
+     品切れ切り替え
+  ===================================== */
+
+  function toggleSoldOut(
+    productId,
+  ) {
+    setSoldOut((current) => ({
+      ...current,
+      [productId]:
+        !current[productId],
+    }))
+  }
+
+  /* =====================================
+     カテゴリ変更
+  ===================================== */
+
+  function selectCategory(id) {
+    setSelectedCategory(id)
+
+    setSelectedShippingRegion(null)
+
+    setSlideDirection('')
+  }
+
+  /* =====================================
+     スワイプでカテゴリ変更
+  ===================================== */
+
+  function changeCategory(
+    id,
+    direction,
+  ) {
+    const currentIndex =
+      categories.findIndex(
+        (category) =>
+          category.id === id,
+      )
+
+    if (currentIndex === -1) {
+      return
+    }
 
     let nextIndex
 
     if (direction === 'next') {
       nextIndex =
-        currentIndex >= categories.length - 1
-          ? 0
-          : currentIndex + 1
-
-      setSlideDirection('slide-left')
+        Math.min(
+          currentIndex + 1,
+          categories.length - 1,
+        )
     } else {
       nextIndex =
-        currentIndex <= 0
-          ? categories.length - 1
-          : currentIndex - 1
-
-      setSlideDirection('slide-right')
+        Math.max(
+          currentIndex - 1,
+          0,
+        )
     }
 
-    setSelectedCategory(categories[nextIndex].id)
+    if (
+      nextIndex === currentIndex
+    ) {
+      return
+    }
+
+    setSlideDirection(
+      direction === 'next'
+        ? 'slide-next'
+        : 'slide-prev',
+    )
+
+    setSelectedCategory(
+      categories[nextIndex].id,
+    )
+
+    setSelectedShippingRegion(
+      null,
+    )
 
     setTimeout(() => {
-      setSlideDirection('none')
+      setSlideDirection('')
     }, 250)
   }
 
-  // ==============================
-  // カテゴリ追加
-  // ==============================
+  /* =====================================
+     タッチ開始
+  ===================================== */
 
-  const addCategory = () => {
-    const name = window.prompt('カテゴリ名を入力してください')
+  function handleTouchStart(
+    event,
+  ) {
+    touchStartX.current =
+      event.changedTouches[0].clientX
 
-    if (!name || !name.trim()) {
-      return
-    }
-
-    const newCategory = {
-      id: Date.now(),
-      name: name.trim(),
-      items: [],
-    }
-
-    setCategories((currentCategories) => [
-      ...currentCategories,
-      newCategory,
-    ])
-
-    setSelectedCategory(newCategory.id)
+    touchStartY.current =
+      event.changedTouches[0].clientY
   }
 
-  // ==============================
-  // カテゴリ編集開始
-  // ==============================
+  /* =====================================
+     タッチ終了
+  ===================================== */
 
-  const startCategoryEdit = (category) => {
-    setEditingCategoryId(category.id)
-    setCategoryName(category.name)
-  }
+  function handleTouchEnd(
+    event,
+  ) {
+    const endX =
+      event.changedTouches[0].clientX
 
-  // ==============================
-  // カテゴリ保存
-  // ==============================
+    const endY =
+      event.changedTouches[0].clientY
 
-  const saveCategory = () => {
-    if (!categoryName.trim()) {
+    const diffX =
+      endX -
+      touchStartX.current
+
+    const diffY =
+      endY -
+      touchStartY.current
+
+    if (
+      Math.abs(diffX) < 50
+    ) {
       return
     }
 
-    setCategories((currentCategories) =>
-      currentCategories.map((category) =>
-        category.id === editingCategoryId
-          ? {
-              ...category,
-              name: categoryName.trim(),
-            }
-          : category,
-      ),
-    )
-
-    setEditingCategoryId(null)
-    setCategoryName('')
-  }
-
-  // ==============================
-  // カテゴリ削除
-  // ==============================
-
-  const deleteCategory = (categoryId) => {
-    if (categories.length <= 1) {
-      window.alert('カテゴリは最低1つ必要です')
+    if (
+      Math.abs(diffX) <
+      Math.abs(diffY)
+    ) {
       return
     }
 
-    const category = categories.find(
-      (item) => item.id === categoryId,
-    )
-
-    if (!category) {
-      return
-    }
-
-    const result = window.confirm(
-      `「${category.name}」を削除しますか？`,
-    )
-
-    if (!result) {
-      return
-    }
-
-    const newCategories = categories.filter(
-      (item) => item.id !== categoryId,
-    )
-
-    setCategories(newCategories)
-
-    if (selectedCategory === categoryId) {
-      setSelectedCategory(newCategories[0].id)
-    }
-  }
-
-  // ==============================
-  // 商品追加開始
-  // ==============================
-
-  const startAddProduct = () => {
-    setEditingProduct({
-      mode: 'add',
-      categoryId: selectedCategory,
-    })
-
-    setProductName('')
-    setProductPrice('')
-  }
-
-  // ==============================
-  // 商品編集開始
-  // ==============================
-
-  const startEditProduct = (product, categoryId) => {
-    setEditingProduct({
-      mode: 'edit',
-      categoryId,
-      productId: product.id,
-    })
-
-    setProductName(product.name)
-    setProductPrice(String(product.price))
-  }
-
-  // ==============================
-  // 商品保存
-  // ==============================
-
-  const saveProduct = () => {
-    if (!productName.trim()) {
-      return
-    }
-
-    const price = Number(productPrice)
-
-    if (!Number.isFinite(price) || price < 0) {
-      return
-    }
-
-    if (editingProduct.mode === 'add') {
-      const newProduct = {
-        id: Date.now(),
-        name: productName.trim(),
-        price,
-      }
-
-      setCategories((currentCategories) =>
-        currentCategories.map((category) =>
-          category.id === editingProduct.categoryId
-            ? {
-                ...category,
-                items: [...category.items, newProduct],
-              }
-            : category,
-        ),
+    if (diffX < 0) {
+      changeCategory(
+        selectedCategory,
+        'next',
       )
     } else {
-      setCategories((currentCategories) =>
-        currentCategories.map((category) =>
-          category.id === editingProduct.categoryId
-            ? {
-                ...category,
-                items: category.items.map((item) =>
-                  item.id === editingProduct.productId
-                    ? {
-                        ...item,
-                        name: productName.trim(),
-                        price,
-                      }
-                    : item,
-                ),
-              }
-            : category,
-        ),
+      changeCategory(
+        selectedCategory,
+        'prev',
+      )
+    }
+  }
+
+  /* =====================================
+     送料地域選択
+  ===================================== */
+
+  function selectShippingRegion(
+    region,
+  ) {
+    setSelectedShippingRegion(
+      region,
+    )
+  }
+
+  /* =====================================
+     送料を注文に追加
+  ===================================== */
+
+  function addShippingToOrder(
+    option,
+  ) {
+    const shippingProduct = {
+      id: `shipping-${option.id}`,
+      name: `送料 ${selectedShippingRegion} ${option.name}`,
+      price: option.price,
+    }
+
+    setOrder((current) => {
+      const existing =
+        current.find(
+          (item) =>
+            item.id ===
+            shippingProduct.id,
+        )
+
+      if (existing) {
+        return current.map(
+          (item) =>
+            item.id ===
+            shippingProduct.id
+              ? {
+                  ...item,
+                  quantity:
+                    item.quantity +
+                    1,
+                }
+              : item,
+        )
+      }
+
+      return [
+        ...current,
+        {
+          ...shippingProduct,
+          quantity: 1,
+        },
+      ]
+    })
+
+    const existing =
+      order.find(
+        (item) =>
+          item.id ===
+          shippingProduct.id,
+      )
+
+    setLatestAddedProduct({
+      name: shippingProduct.name,
+      quantity:
+        existing?.quantity
+          ? existing.quantity + 1
+          : 1,
+    })
+
+    setSelectedShippingRegion(null)
+  }
+
+  /* =====================================
+     ヘッダー
+  ===================================== */
+
+  function renderHeader() {
+    if (order.length === 0) {
+      return (
+        <header className="company-header">
+          <img
+            src="/header-logo.png"
+            alt="高山製菓株式会社"
+          />
+        </header>
       )
     }
 
-    setEditingProduct(null)
-    setProductName('')
-    setProductPrice('')
-  }
+    const latestOrderItem =
+      order[order.length - 1]
 
-  // ==============================
-  // 商品削除
-  // ==============================
+    return (
+      <header className="company-header order-summary-header">
+        <div className="latest-product">
+          <span>追加：</span>
 
-  const deleteProduct = (productId, categoryId) => {
-    const category = categories.find(
-      (item) => item.id === categoryId,
-    )
+          <strong>
+            {latestAddedProduct?.name ||
+              latestOrderItem?.name}
+          </strong>
 
-    const product = category?.items.find(
-      (item) => item.id === productId,
-    )
+          <span>
+            ×
+            {latestAddedProduct?.quantity ||
+              latestOrderItem?.quantity}
+          </span>
+        </div>
 
-    if (!product) {
-      return
-    }
+        <div className="header-total">
+          <span>合計</span>
 
-    const result = window.confirm(
-      `「${product.name}」を削除しますか？`,
-    )
-
-    if (!result) {
-      return
-    }
-
-    setCategories((currentCategories) =>
-      currentCategories.map((category) =>
-        category.id === categoryId
-          ? {
-              ...category,
-              items: category.items.filter(
-                (item) => item.id !== productId,
-              ),
-            }
-          : category,
-      ),
+          <strong>
+            ¥
+            {totalAmount.toLocaleString()}
+          </strong>
+        </div>
+      </header>
     )
   }
 
-  // ==============================
-  // タッチ操作
-  // ==============================
+  /* =====================================
+     上部メニュー
+  ===================================== */
 
-  const touchStartX = useRef(null)
-
-  const handleTouchStart = (event) => {
-    touchStartX.current = event.touches[0].clientX
-  }
-
-  const handleTouchEnd = (event) => {
-    if (touchStartX.current === null) {
-      return
-    }
-
-    const endX = event.changedTouches[0].clientX
-    const diff = endX - touchStartX.current
-
-    if (Math.abs(diff) > 50) {
-      if (diff < 0) {
-        moveCategory('next')
-      } else {
-        moveCategory('prev')
-      }
-    }
-
-    touchStartX.current = null
-  }
-
-  // ==============================
-  // 表示
-  // ==============================
-
-  return (
-    <div className="app">
-
-      {/* ==============================
-          上部メニュー
-      ============================== */}
-
+  function renderTopMenu() {
+    return (
       <nav className="top-menu">
+
         <button
-          className={screen === 'order' ? 'active' : ''}
-          onClick={() => setScreen('order')}
+          className={
+            screen === 'order'
+              ? 'active'
+              : ''
+          }
+          onClick={() => {
+            setScreen('order')
+            setSelectedShippingRegion(
+              null,
+            )
+          }}
         >
           注文
         </button>
 
         <button
-          className={screen === 'history' ? 'active' : ''}
-          onClick={() => setScreen('history')}
+          className={
+            screen ===
+            'order-content'
+              ? 'active'
+              : ''
+          }
+          onClick={() =>
+            setScreen(
+              'order-content',
+            )
+          }
+        >
+          注文内容
+        </button>
+
+        <button
+          className={
+            screen === 'history'
+              ? 'active'
+              : ''
+          }
+          onClick={() =>
+            setScreen('history')
+          }
         >
           履歴
         </button>
 
         <button
-          className={screen === 'settings' ? 'active' : ''}
-          onClick={() => setScreen('settings')}
+          className={
+            screen === 'sold-out'
+              ? 'active'
+              : ''
+          }
+          onClick={() =>
+            setScreen('sold-out')
+          }
         >
-          商品設定
+          品切れ設定
         </button>
+
       </nav>
+    )
+  }
 
-      {/* ==============================
-          注文画面
-      ============================== */}
+  /* =====================================
+     カテゴリ
+  ===================================== */
 
-      {screen === 'order' && (
-        <main className="order-screen">
+  function renderCategoryPanel() {
+    return (
+      <section className="category-panel">
 
-          {/* 注文内容 */}
-          <section className="order-panel">
-
-            <div className="section-title">
-              注文内容
-            </div>
-
-            <div
-              className="order-list"
-              ref={orderListRef}
-            >
-              {order.length === 0 ? (
-                <div className="empty-order">
-                  商品を選択してください
-                </div>
-              ) : (
-                order.map((item) => (
-                  <div
-                    className="order-item"
-                    key={item.id}
-                  >
-                    <div className="order-item-info">
-                      <div className="order-item-name">
-                        {item.name}
-                      </div>
-
-                      <div className="order-item-price">
-                        ¥{item.price.toLocaleString()}
-                      </div>
-                    </div>
-
-                    <div className="quantity-control">
-                      <button
-                        onClick={() =>
-                          changeQuantity(item.id, -1)
-                        }
-                      >
-                        −
-                      </button>
-
-                      <span>
-                        {item.quantity}
-                      </span>
-
-                      <button
-                        onClick={() =>
-                          changeQuantity(item.id, 1)
-                        }
-                      >
-                        ＋
-                      </button>
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-
-            <div className="order-bottom">
-
-              <div className="total-row">
-                <span>合計</span>
-
-                <strong>
-                  ¥{totalPrice.toLocaleString()}
-                </strong>
-              </div>
-
+        <div className="category-buttons">
+          {categories.map(
+            (category) => (
               <button
-                className="confirm-button"
-                onClick={confirmOrder}
-                disabled={order.length === 0}
+                key={
+                  category.id
+                }
+                className={
+                  category.id ===
+                  selectedCategory
+                    ? 'category-button active'
+                    : 'category-button'
+                }
+                onClick={() =>
+                  selectCategory(
+                    category.id,
+                  )
+                }
               >
-                注文を確定する
+                {renderCategoryName(
+                  category,
+                )}
               </button>
+            ),
+          )}
+        </div>
 
-            </div>
+        <div className="current-category-name">
+          {renderCategoryName(
+            currentCategory,
+          )}
+        </div>
+
+      </section>
+    )
+  }
+
+  /* =====================================
+     注文画面
+  ===================================== */
+
+  function renderOrderScreen() {
+    return (
+      <main className="order-main">
+
+        {renderCategoryPanel()}
+
+        {/* =========================
+            送料カテゴリ
+        ========================= */}
+
+        {isShippingCategory ? (
+          <section className="shipping-panel">
+
+            {!selectedShippingRegion ? (
+              <>
+                <div className="shipping-title">
+                  地域を選択
+                </div>
+
+                <div className="shipping-region-grid">
+                  {Object.keys(
+                    shippingOptions,
+                  ).map(
+                    (region) => (
+                      <button
+                        key={region}
+                        className="shipping-region-button"
+                        onClick={() =>
+                          selectShippingRegion(
+                            region,
+                          )
+                        }
+                      >
+                        {region}
+                      </button>
+                    ),
+                  )}
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="shipping-selected-region">
+                  {
+                    selectedShippingRegion
+                  }
+                </div>
+
+                <div className="shipping-title">
+                  個数を選択
+                </div>
+
+                <div className="shipping-options-grid">
+                  {shippingOptions[
+                    selectedShippingRegion
+                  ].map(
+                    (option) => (
+                      <button
+                        key={
+                          option.id
+                        }
+                        className="shipping-option-button"
+                        onClick={() =>
+                          addShippingToOrder(
+                            option,
+                          )
+                        }
+                      >
+                        <span className="shipping-option-name">
+                          {
+                            option.name
+                          }
+                        </span>
+
+                        <span className="shipping-option-price">
+                          ¥
+                          {option.price.toLocaleString()}
+                        </span>
+                      </button>
+                    ),
+                  )}
+                </div>
+
+                <button
+                  className="shipping-back-button"
+                  onClick={() =>
+                    setSelectedShippingRegion(
+                      null,
+                    )
+                  }
+                >
+                  地域選択に戻る
+                </button>
+              </>
+            )}
+
           </section>
+        ) : (
 
-          {/* 商品一覧 */}
+          /* =========================
+             通常商品
+          ========================= */
+
           <section
             className="menu-panel"
-            onTouchStart={handleTouchStart}
-            onTouchEnd={handleTouchEnd}
+            onTouchStart={
+              handleTouchStart
+            }
+            onTouchEnd={
+              handleTouchEnd
+            }
           >
-
-            <div className="category-header">
-
-              <button
-                className="category-arrow"
-                onClick={() => moveCategory('prev')}
-              >
-                ‹
-              </button>
-
-              <div className="category-title">
-                {currentCategory?.name}
-              </div>
-
-              <button
-                className="category-arrow"
-                onClick={() => moveCategory('next')}
-              >
-                ›
-              </button>
-
-            </div>
 
             <div
               className={`menu-scroll ${slideDirection}`}
             >
-              {currentCategory?.items.map((product) => (
-                <button
-                  className="menu-item"
-                  key={product.id}
-                  onClick={() => addToOrder(product)}
-                >
-                  <span>{product.name}</span>
 
-                  <span>
-                    ¥{product.price.toLocaleString()}
-                  </span>
-                </button>
-              ))}
+              {currentCategory?.items.map(
+                (product) => {
+                  const isSoldOut =
+                    !!soldOut[
+                      product.id
+                    ]
+
+                  const productImage =
+                    getProductImage(
+                      product,
+                    )
+
+                  return (
+                    <button
+                      key={
+                        product.id
+                      }
+                      className={
+                        isSoldOut
+                          ? 'menu-item sold-out'
+                          : 'menu-item'
+                      }
+                      disabled={
+                        isSoldOut
+                      }
+                      onClick={() =>
+                        addToOrder(
+                          product,
+                        )
+                      }
+                    >
+
+                      {/* 商品名 */}
+
+                      <span className="menu-item-name">
+                        {product.name}
+                      </span>
+
+                      {/* 商品画像 */}
+
+                      {productImage && (
+                        <img
+                          className="menu-item-image"
+                          src={
+                            productImage
+                          }
+                          alt={
+                            product.name
+                          }
+                          onError={(
+                            event,
+                          ) => {
+                            event.currentTarget.style.display =
+                              'none'
+                          }}
+                        />
+                      )}
+
+                      {/* 値段 */}
+
+                      <span className="menu-item-price">
+                        ¥
+                        {product.price.toLocaleString()}
+                      </span>
+
+                      {/* 品切れ */}
+
+                      {isSoldOut && (
+                        <span className="sold-out-label">
+                          品切れ
+                        </span>
+                      )}
+
+                    </button>
+                  )
+                },
+              )}
+
             </div>
 
+            {/* ページインジケーター */}
+
             <div className="page-indicator">
-              {categories.map((category) => (
-                <span
-                  key={category.id}
-                  className={
-                    category.id === selectedCategory
-                      ? 'active'
-                      : ''
-                  }
-                />
-              ))}
+              {categories.map(
+                (category) => (
+                  <span
+                    key={
+                      category.id
+                    }
+                    className={
+                      category.id ===
+                      selectedCategory
+                        ? 'active'
+                        : ''
+                    }
+                  />
+                ),
+              )}
             </div>
 
           </section>
-        </main>
-      )}
+        )}
+      </main>
+    )
+  }
 
-      {/* ==============================
-          履歴画面
-      ============================== */}
+  /* =====================================
+     注文内容画面
+  ===================================== */
 
-      {screen === 'history' && (
-        <main className="history-screen">
+  function renderOrderContentScreen() {
+    return (
+      <main className="order-content-screen">
 
-          <div className="section-title">
-            注文履歴
-          </div>
+        <div
+          className="order-scroll"
+          ref={orderScrollRef}
+        >
 
-          <div className="history-list">
-
-            {orderHistory.length === 0 ? (
-              <div className="empty-history">
-                注文履歴はありません
-              </div>
-            ) : (
-              orderHistory.map((history) => (
+          {order.length === 0 ? (
+            <div className="empty-order">
+              注文はありません
+            </div>
+          ) : (
+            order.map(
+              (item) => (
                 <div
-                  className="history-card"
-                  key={history.id}
+                  className="order-item"
+                  key={item.id}
                 >
-                  <div className="history-header">
+
+                  <div className="order-item-name">
+                    {item.name}
+                  </div>
+
+                  <div className="order-item-price">
+                    ¥
+                    {(
+                      item.price *
+                      item.quantity
+                    ).toLocaleString()}
+                  </div>
+
+                  <div className="quantity-controls">
+
+                    <button
+                      onClick={() =>
+                        changeQuantity(
+                          item.id,
+                          -1,
+                        )
+                      }
+                    >
+                      −
+                    </button>
+
                     <span>
-                      {history.date}
+                      {
+                        item.quantity
+                      }
                     </span>
 
-                    <strong>
-                      ¥{history.total.toLocaleString()}
-                    </strong>
+                    <button
+                      onClick={() =>
+                        changeQuantity(
+                          item.id,
+                          1,
+                        )
+                      }
+                    >
+                      ＋
+                    </button>
+
                   </div>
 
-                  <div className="history-items">
-                    {history.items.map((item) => (
-                      <div
-                        className="history-item"
-                        key={item.id}
-                      >
-                        <span>
-                          {item.name} × {item.quantity}
-                        </span>
-
-                        <span>
-                          ¥
-                          {(
-                            item.price * item.quantity
-                          ).toLocaleString()}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
                 </div>
-              ))
-            )}
+              ),
+            )
+          )}
 
+        </div>
+
+        <div className="total-row">
+          <span>
+            合計
+          </span>
+
+          <strong>
+            ¥
+            {totalAmount.toLocaleString()}
+          </strong>
+        </div>
+
+        <button
+          className="confirm"
+          disabled={
+            order.length === 0
+          }
+          onClick={
+            confirmOrder
+          }
+        >
+          注文を確定
+        </button>
+
+      </main>
+    )
+  }
+
+  /* =====================================
+     履歴画面
+  ===================================== */
+
+  function renderHistoryScreen() {
+    return (
+      <main className="history">
+
+        {orderHistory.length === 0 ? (
+          <div className="empty-history">
+            履歴はありません
           </div>
+        ) : (
+          orderHistory.map(
+            (item) => (
+              <div
+                className="history-item"
+                key={item.id}
+              >
 
-        </main>
-      )}
+                <div className="history-header">
 
-      {/* ==============================
-          商品設定画面
-      ============================== */}
+                  <span>
+                    {item.date}
+                  </span>
 
-      {screen === 'settings' && (
-        <main className="settings-screen">
-
-          <div className="section-title">
-            商品設定
-          </div>
-
-          <div className="settings-content">
-
-            {/* カテゴリ設定 */}
-
-            <section className="settings-section">
-
-              <div className="settings-section-header">
-                <h2>カテゴリ</h2>
-
-                <button
-                  className="add-button"
-                  onClick={addCategory}
-                >
-                  ＋カテゴリ追加
-                </button>
-              </div>
-
-              <div className="category-settings-list">
-
-                {categories.map((category) => (
-                  <div
-                    className="category-setting-item"
-                    key={category.id}
+                  <button
+                    onClick={() =>
+                      deleteHistory(
+                        item.id,
+                      )
+                    }
                   >
-                    {editingCategoryId === category.id ? (
-                      <div className="edit-form">
+                    削除
+                  </button>
 
-                        <input
-                          value={categoryName}
-                          onChange={(event) =>
-                            setCategoryName(
-                              event.target.value,
-                            )
-                          }
-                          autoFocus
-                        />
+                </div>
 
-                        <button
-                          onClick={saveCategory}
-                        >
-                          保存
-                        </button>
+                {item.items.map(
+                  (food) => (
+                    <div
+                      className="history-food"
+                      key={food.id}
+                    >
 
-                        <button
-                          onClick={() => {
-                            setEditingCategoryId(null)
-                            setCategoryName('')
-                          }}
-                        >
-                          キャンセル
-                        </button>
+                      <span>
+                        {food.name}{' '}
+                        ×
+                        {
+                          food.quantity
+                        }
+                      </span>
 
-                      </div>
-                    ) : (
-                      <>
-                        <span>
-                          {category.name}
-                        </span>
+                      <span>
+                        ¥
+                        {(
+                          food.price *
+                          food.quantity
+                        ).toLocaleString()}
+                      </span>
 
-                        <div className="setting-actions">
+                    </div>
+                  ),
+                )}
 
-                          <button
-                            onClick={() =>
-                              startCategoryEdit(
-                                category,
-                              )
-                            }
-                          >
-                            編集
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              deleteCategory(
-                                category.id,
-                              )
-                            }
-                          >
-                            削除
-                          </button>
-
-                        </div>
-                      </>
-                    )}
-                  </div>
-                ))}
+                <div className="history-total">
+                  合計{' '}
+                  {item.total.toLocaleString()}{' '}
+                  円
+                </div>
 
               </div>
+            ),
+          )
+        )}
 
-            </section>
+      </main>
+    )
+  }
 
-            {/* 商品設定 */}
+  /* =====================================
+     品切れ設定画面
+     ※送料カテゴリは除外
+  ===================================== */
 
-            <section className="settings-section">
+  function renderSoldOutScreen() {
+    const productCategories =
+      categories.filter(
+        (category) =>
+          category.id !== 4,
+      )
 
-              <div className="settings-section-header">
-                <h2>
-                  商品
-                  {currentCategory
-                    ? `（${currentCategory.name}）`
-                    : ''}
-                </h2>
+    return (
+      <main className="sold-out-screen">
 
-                <button
-                  className="add-button"
-                  onClick={startAddProduct}
-                >
-                  ＋商品追加
-                </button>
-              </div>
+        <div className="sold-out-description">
+          品切れの商品をタップしてください。
+        </div>
 
-              <div className="product-settings-list">
+        {productCategories.map(
+          (category) => (
+            <section
+              className="sold-out-category"
+              key={
+                category.id
+              }
+            >
 
-                {currentCategory?.items.length === 0 ? (
-                  <div className="empty-settings">
-                    商品がありません
-                  </div>
-                ) : (
-                  currentCategory?.items.map(
-                    (product) => (
-                      <div
-                        className="product-setting-item"
-                        key={product.id}
+              <h2>
+                {renderCategoryName(
+                  category,
+                )}
+              </h2>
+
+              <div className="sold-out-grid">
+
+                {category.items.map(
+                  (product) => {
+                    const isSoldOut =
+                      !!soldOut[
+                        product.id
+                      ]
+
+                    return (
+                      <button
+                        key={
+                          product.id
+                        }
+                        className={
+                          isSoldOut
+                            ? 'sold-out-setting-button active'
+                            : 'sold-out-setting-button'
+                        }
+                        onClick={() =>
+                          toggleSoldOut(
+                            product.id,
+                          )
+                        }
                       >
 
-                        {editingProduct?.mode ===
-                          'edit' &&
-                        editingProduct.productId ===
-                          product.id ? (
-                          <div className="edit-form">
+                        <span>
+                          {
+                            product.name
+                          }
+                        </span>
 
-                            <input
-                              value={productName}
-                              onChange={(event) =>
-                                setProductName(
-                                  event.target.value,
-                                )
-                              }
-                              placeholder="商品名"
-                            />
+                        <strong>
+                          {isSoldOut
+                            ? '品切れ'
+                            : '販売中'}
+                        </strong>
 
-                            <input
-                              type="number"
-                              value={productPrice}
-                              onChange={(event) =>
-                                setProductPrice(
-                                  event.target.value,
-                                )
-                              }
-                              placeholder="価格"
-                            />
-
-                            <button
-                              onClick={saveProduct}
-                            >
-                              保存
-                            </button>
-
-                            <button
-                              onClick={() =>
-                                setEditingProduct(null)
-                              }
-                            >
-                              キャンセル
-                            </button>
-
-                          </div>
-                        ) : (
-                          <>
-                            <div className="product-setting-info">
-
-                              <span>
-                                {product.name}
-                              </span>
-
-                              <strong>
-                                ¥
-                                {product.price.toLocaleString()}
-                              </strong>
-
-                            </div>
-
-                            <div className="setting-actions">
-
-                              <button
-                                onClick={() =>
-                                  startEditProduct(
-                                    product,
-                                    currentCategory.id,
-                                  )
-                                }
-                              >
-                                編集
-                              </button>
-
-                              <button
-                                onClick={() =>
-                                  deleteProduct(
-                                    product.id,
-                                    currentCategory.id,
-                                  )
-                                }
-                              >
-                                削除
-                              </button>
-
-                            </div>
-                          </>
-                        )}
-
-                      </div>
-                    ),
-                  )
+                      </button>
+                    )
+                  },
                 )}
 
               </div>
 
             </section>
+          ),
+        )}
 
-          </div>
+      </main>
+    )
+  }
 
-          {/* 商品追加フォーム */}
+  /* =====================================
+     アプリ表示
+  ===================================== */
 
-          {editingProduct?.mode === 'add' && (
-            <div className="modal-overlay">
+  return (
+    <div className="app">
 
-              <div className="modal">
+      {renderHeader()}
 
-                <h2>商品追加</h2>
+      {renderTopMenu()}
 
-                <input
-                  value={productName}
-                  onChange={(event) =>
-                    setProductName(event.target.value)
-                  }
-                  placeholder="商品名"
-                  autoFocus
-                />
+      {screen === 'order' &&
+        renderOrderScreen()}
 
-                <input
-                  type="number"
-                  value={productPrice}
-                  onChange={(event) =>
-                    setProductPrice(event.target.value)
-                  }
-                  placeholder="価格"
-                />
+      {screen ===
+        'order-content' &&
+        renderOrderContentScreen()}
 
-                <div className="modal-actions">
+      {screen === 'history' &&
+        renderHistoryScreen()}
 
-                  <button
-                    onClick={saveProduct}
-                  >
-                    保存
-                  </button>
-
-                  <button
-                    onClick={() =>
-                      setEditingProduct(null)
-                    }
-                  >
-                    キャンセル
-                  </button>
-
-                </div>
-
-              </div>
-
-            </div>
-          )}
-
-        </main>
-      )}
+      {screen === 'sold-out' &&
+        renderSoldOutScreen()}
 
     </div>
   )
