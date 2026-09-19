@@ -1896,3 +1896,52 @@ button:disabled {
 .order-summary-header .header-total strong {
   color: #fff;
 }
+
+
+/* 注文内容：商品ごとのカード表示 */
+.order-item {
+  position: relative;
+  margin: 0 10px 8px;
+  padding: 9px 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.order-item-shipping {
+  border-color: #e5e7eb;
+  background: #fff;
+}
+
+/* 注文内容の送料は地域名＋2行の詳細を見やすく表示 */
+.order-item-shipping .order-item-info {
+  min-width: 0;
+}
+
+.order-item-shipping .order-item-name-text {
+  white-space: normal;
+  line-height: 1.25;
+}
+
+.order-item-shipping .order-item-name-text > span:first-child {
+  display: block;
+  white-space: nowrap;
+}
+
+.order-item-shipping .order-item-subname {
+  display: block;
+  white-space: nowrap;
+  margin-top: 3px;
+}
+
+/* カテゴリ長押し・ドラッグ */
+.category-buttons,
+.category-button {
+  touch-action: pan-y;
+}
+
+.category-reorder-mode .category-button {
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grabbing;
+}

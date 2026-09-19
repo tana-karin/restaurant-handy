@@ -196,6 +196,12 @@ function normalizeCategories(categories) {
     410: '952_包装紙',
   }
 
+  const currentProductNames = new Map(
+    defaultCategories.flatMap((category) =>
+      category.items.map((product) => [product.id, product]),
+    ),
+  )
+
   return categories.map((category) => ({
     ...category,
     items: Array.isArray(category.items)
@@ -393,17 +399,9 @@ function getMenuItemNameClass(name) {
 }
 
 function renderShippingRegionName(region) {
-  const text = String(region || '')
-  const match = text.match(/^(.*?)[(（](.*?)[)）]$/)
+  const text = String(region || '').replace(/\s+/g, ' ').trim()
 
-  if (!match) {
-    return text
-  }
-
-  const title = match[1]
-  const inside = match[2]
-
-  if (title === '中部' && inside.includes('愛知')) {
+  if (text === '中部 愛知・石川・岐阜・静岡・富山・福井・三重') {
     return (
       <span className="shipping-region-name shipping-region-name-chubu">
         <span className="shipping-region-main">中部</span>
@@ -417,16 +415,22 @@ function renderShippingRegionName(region) {
     )
   }
 
-  if (title === '中部') {
+  if (text === '中部 長野・新潟') {
     return (
       <span className="shipping-region-name">
         <span className="shipping-region-main">中部</span>
-        <span className="shipping-region-detail">
-          {inside}
-        </span>
+        <span className="shipping-region-detail">長野・新潟</span>
       </span>
     )
   }
+
+  const match = text.match(/^(.*?)[(（](.*?)[)）]$/)
+  if (!match) {
+    return text
+  }
+
+  const title = match[1].trim()
+  const inside = match[2].trim()
 
   return (
     <span className="shipping-region-name">
@@ -434,6 +438,35 @@ function renderShippingRegionName(region) {
       <span className="shipping-region-detail">（{inside}）</span>
     </span>
   )
+}
+
+function renderOrderItemDisplay(item) {
+  const display = getProductDisplay(item)
+  const isShipping = String(item?.id || '').startsWith('shipping-')
+  if (!isShipping) return display
+
+  const raw = String(item?.name || '')
+  const match = raw.match(/^送料\s+中部\s+(愛知・石川・岐阜・静岡・富山・福井・三重|長野・新潟)\s+(.+)$/)
+  if (match) {
+    if (match[1].includes('愛知')) {
+      return {
+        ...display,
+        code: '',
+        label: '送料 中部',
+        name: '愛知・石川・岐阜・静岡',
+        subName: `富山・福井・三重 ${match[2]}`,
+      }
+    }
+    return {
+      ...display,
+      code: '',
+      label: '送料 中部',
+      name: '長野・新潟',
+      subName: match[2],
+    }
+  }
+
+  return display
 }
 
 function App() {
@@ -1054,6 +1087,9 @@ function App() {
               onPointerDown={(event) =>
                 handleCategoryPointerDown(event, category)
               }
+              onPointerMove={handleCategoryPointerMove}
+              onPointerUp={(event) => handleCategoryPointerUp(event)}
+              onPointerCancel={handleCategoryPointerCancel}
               onClick={(event) => {
                 if (categoryReorderMode || categoryDragMoved.current) {
                   event.preventDefault()
@@ -1324,7 +1360,7 @@ function App() {
                 )}
 
                 {(() => {
-                  const display = getProductDisplay(item)
+                  const display = renderOrderItemDisplay(item)
 
                   return (
                     <div className="order-item-info">
