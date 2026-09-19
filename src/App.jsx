@@ -14,10 +14,11 @@ const defaultCategories = [
     name: '化粧缶',
     items: [
       {
-  id: 1,
-  name: '001_味の宴',
+        id: 1,
+        name: '001_味の宴',
         price: 3600,
-},
+        image: '/products/001.png',
+      },
       { id: 2, name: '002_味くらべ', price: 2500 },
       { id: 3, name: '003_ころもち(個々包装)', price: 2700 },
       { id: 4, name: '004_ころもち(ばら詰)', price: 2700 },
@@ -69,7 +70,7 @@ const defaultCategories = [
         name: '中部(愛知・石川・岐阜・静岡・富山・福井・三重)',
         price: 500,
       },
-      { id: 304, name: '中部(長野・新潟)', price: 600 },
+      { id: 304, name: '中部（長野・新潟）', price: 600 },
       { id: 305, name: '東北', price: 900 },
       { id: 306, name: '北海道・沖縄', price: 1300 },
     ],
@@ -141,7 +142,7 @@ const shippingOptions = {
     { id: 'chubu-aichi-7-8', name: '7～8缶', price: 800 },
   ],
 
-  '中部(長野・新潟)': [
+  '中部（長野・新潟）': [
     { id: 'chubu-nagano-1', name: '1缶', price: 600 },
     { id: 'chubu-nagano-2-3', name: '2～3缶', price: 700 },
     { id: 'chubu-nagano-4-6', name: '4～6缶', price: 800 },
@@ -266,6 +267,10 @@ function getProductImage(product) {
     return null
   }
 
+  if (getProductCode(product) === '001') {
+    return '/products/001.png'
+  }
+
   if (product.image) {
     return product.image
   }
@@ -278,6 +283,10 @@ function getProductImage(product) {
 function getProductImageCandidates(product) {
   if (!product || String(product.id || '').startsWith('shipping-')) {
     return []
+  }
+
+  if (getProductCode(product) === '001') {
+    return ['/products/001.png']
   }
 
   if (product.image) {
@@ -364,7 +373,13 @@ function getProductDisplay(product) {
 }
 
 function getMenuItemNameClass(name) {
-  const length = String(name || '').length
+  const text = String(name || '')
+
+  if (text.includes('マヨネーズ風味')) {
+    return 'menu-item-name name-mayonnaise'
+  }
+
+  const length = text.length
 
   if (length >= 14) {
     return 'menu-item-name name-extra-long'
@@ -397,8 +412,6 @@ function renderShippingRegionName(region) {
             <span>愛知・石川・岐阜・静岡</span>
             <span>富山・福井・三重</span>
           </span>
-          <span className="shipping-bracket shipping-bracket-left">（</span>
-          <span className="shipping-bracket shipping-bracket-right">）</span>
         </span>
       </span>
     )
@@ -409,7 +422,7 @@ function renderShippingRegionName(region) {
       <span className="shipping-region-name">
         <span className="shipping-region-main">中部</span>
         <span className="shipping-region-detail">
-          （{inside}）
+          {inside}
         </span>
       </span>
     )
@@ -1171,8 +1184,8 @@ function App() {
                       key={product.id}
                       className={
                         isSoldOut
-                          ? 'menu-item sold-out'
-                          : 'menu-item'
+                          ? `menu-item sold-out category-${currentCategory?.id || ''}`
+                          : `menu-item category-${currentCategory?.id || ''}`
                       }
                       disabled={isSoldOut}
                       onClick={() => addToOrder(product)}
