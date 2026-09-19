@@ -25,8 +25,8 @@ const defaultCategories = [
       { id: 5, name: '005_華の友', price: 2700 },
       { id: 6, name: '006_四季の集', price: 2500 },
       { id: 7, name: '007_蓬莱', price: 2500 },
-      { id: 8, name: '009_マヨネーズ風味', price: 2500 },
-      { id: 9, name: '010_海老サラダ', price: 2500 },
+      { id: 8, name: '009_ﾏﾖﾈｰｽﾞ風味', price: 2500 },
+      { id: 9, name: '010_海老ｻﾗﾀﾞ', price: 2500 },
       { id: 10, name: '011_田舎焼', price: 2500 },
       { id: 11, name: '013_飛鳥', price: 2500 },
     ],
@@ -38,8 +38,8 @@ const defaultCategories = [
       { id: 101, name: '100_袋入 詰め合わせ', price: 3600 },
       { id: 102, name: '104_袋入 ころもち', price: 3800 },
       { id: 103, name: '105_袋入 華の友', price: 3800 },
-      { id: 104, name: '109_袋入 マヨネーズ風味', price: 3600 },
-      { id: 105, name: '110_袋入 海老サラダ', price: 3600 },
+      { id: 104, name: '109_袋入 ﾏﾖﾈｰｽﾞ風味', price: 3600 },
+      { id: 105, name: '110_袋入 海老ｻﾗﾀﾞ', price: 3600 },
       { id: 106, name: '111_袋入 田舎焼', price: 3600 },
       { id: 107, name: '114_袋入 松しぐれ', price: 3600 },
     ],
@@ -49,8 +49,8 @@ const defaultCategories = [
     name: '限定商品・大箱',
     items: [
       { id: 201, name: '433_高山「極」甘醤油', price: 1300 },
-      { id: 202, name: '425_梅サラダ', price: 600 },
-      { id: 203, name: '418_うるちサラダ', price: 600 },
+      { id: 202, name: '425_梅ｻﾗﾀﾞ', price: 600 },
+      { id: 203, name: '418_うるちｻﾗﾀﾞ', price: 600 },
       { id: 204, name: '420_昔風味 塩味', price: 600 },
       { id: 205, name: '421_昔風味 黒砂糖味', price: 600 },
       { id: 206, name: '402_大箱 味くらべ', price: 6500 },
@@ -81,13 +81,13 @@ const defaultCategories = [
     items: [
       { id: 401, name: '971_紙袋 小', price: 40 },
       { id: 402, name: '972_紙袋 大', price: 60 },
-      { id: 403, name: '973_ビニール袋 小(5枚)', price: 30 },
-      { id: 404, name: '974_ビニール袋 大(5枚)', price: 60 },
-      { id: 405, name: '981_1缶用パッキン', price: 80 },
-      { id: 406, name: '982_2缶用パッキン', price: 100 },
-      { id: 407, name: '983_3缶用パッキン', price: 110 },
-      { id: 408, name: '984_4缶用パッキン', price: 130 },
-      { id: 409, name: '986_6缶用パッキン', price: 150 },
+      { id: 403, name: '973_ﾋﾞﾆｰﾙ袋 小(5枚)', price: 30 },
+      { id: 404, name: '974_ﾋﾞﾆｰﾙ袋 大(5枚)', price: 60 },
+      { id: 405, name: '981_1缶用ﾊﾟｯｷﾝ', price: 80 },
+      { id: 406, name: '982_2缶用ﾊﾟｯｷﾝ', price: 100 },
+      { id: 407, name: '983_3缶用ﾊﾟｯｷﾝ', price: 110 },
+      { id: 408, name: '984_4缶用ﾊﾟｯｷﾝ', price: 130 },
+      { id: 409, name: '986_6缶用ﾊﾟｯｷﾝ', price: 150 },
       { id: 410, name: '952_包装紙', price: 30 },
     ],
   },
@@ -102,7 +102,7 @@ const defaultCategories = [
       { id: 505, name: '805_割れ 浦島', price: 3500 },
       { id: 506, name: '806_割れ 豆かき', price: 3500 },
       { id: 507, name: '807_割れ 田舎焼', price: 3000 },
-      { id: 508, name: '808_割れ 海老サラダ', price: 3000 },
+      { id: 508, name: '808_割れ 海老ｻﾗﾀﾞ', price: 3000 },
     ],
   },
   {
@@ -110,8 +110,8 @@ const defaultCategories = [
     name: '詰替パック',
     items: [
       { id: 601, name: '304_詰替 ころもち', price: 1500 },
-      { id: 602, name: '309_詰替 マヨネーズ風味', price: 1300 },
-      { id: 603, name: '310_詰替 海老サラダ', price: 1300 },
+      { id: 602, name: '309_詰替 ﾏﾖﾈｰｽﾞ風味', price: 1300 },
+      { id: 603, name: '310_詰替 海老ｻﾗﾀﾞ', price: 1300 },
       { id: 604, name: '311_詰替 田舎焼', price: 1300 },
       { id: 605, name: '312_詰替 蓬莱・老松・浦島', price: 1300 },
       { id: 606, name: '314_詰替 松しぐれ', price: 1300 },
@@ -164,6 +164,14 @@ const shippingOptions = {
   ],
 }
 
+// --------------------------------------------------
+// localStorageから保存済みデータを読み込む処理
+// --------------------------------------------------
+// ・指定されたキーに保存データがあるか確認する
+// ・データが存在する場合はJSON文字列を元のデータに戻す
+// ・保存データがない場合、または壊れたJSONの場合はfallbackを返す
+// ・この処理により、保存データの異常でアプリ全体が停止するのを防ぐ
+// --------------------------------------------------
 function loadStorage(key, fallback) {
   try {
     const saved = localStorage.getItem(key)
@@ -178,6 +186,14 @@ function loadStorage(key, fallback) {
   }
 }
 
+// --------------------------------------------------
+// 商品カテゴリーの保存データを現在の正式な商品名に合わせる処理
+// --------------------------------------------------
+// ・localStorageに古い商品名が残っている場合でも、現在の正式名称を表示する
+// ・特に袋・ﾊﾟｯｷﾝ系の商品名は商品IDを基準に正式名称へ統一する
+// ・価格、商品画像、カテゴリー順など、商品名以外のデータは変更しない
+// ・保存データが配列ではない場合は、そのまま返して初期化側で処理する
+// --------------------------------------------------
 function normalizeCategories(categories) {
   if (!Array.isArray(categories)) {
     return categories
@@ -186,21 +202,16 @@ function normalizeCategories(categories) {
   const packingCodes = {
     401: '971_紙袋 小',
     402: '972_紙袋 大',
-    403: '973_ビニール袋 小(5枚)',
-    404: '974_ビニール袋 大(5枚)',
-    405: '981_1缶用パッキン',
-    406: '982_2缶用パッキン',
-    407: '983_3缶用パッキン',
-    408: '984_4缶用パッキン',
-    409: '986_6缶用パッキン',
+    403: '973_ﾋﾞﾆｰﾙ袋 小(5枚)',
+    404: '974_ﾋﾞﾆｰﾙ袋 大(5枚)',
+    405: '981_1缶用ﾊﾟｯｷﾝ',
+    406: '982_2缶用ﾊﾟｯｷﾝ',
+    407: '983_3缶用ﾊﾟｯｷﾝ',
+    408: '984_4缶用ﾊﾟｯｷﾝ',
+    409: '986_6缶用ﾊﾟｯｷﾝ',
     410: '952_包装紙',
   }
 
-  const currentProductNames = new Map(
-    defaultCategories.flatMap((category) =>
-      category.items.map((product) => [product.id, product]),
-    ),
-  )
 
   return categories.map((category) => ({
     ...category,
@@ -273,9 +284,6 @@ function getProductImage(product) {
     return null
   }
 
-  if (getProductCode(product) === '001') {
-    return '/products/001.png'
-  }
 
   if (product.image) {
     return product.image
@@ -291,9 +299,6 @@ function getProductImageCandidates(product) {
     return []
   }
 
-  if (getProductCode(product) === '001') {
-    return ['/products/001.png']
-  }
 
   if (product.image) {
     return [product.image]
@@ -359,7 +364,7 @@ function getProductDisplay(product) {
   }
 
   // 袋・パッキン系は「3桁数字だけ」を1行目にする
-  if (['971', '972', '973', '974', '981', '982', '983', '984', '985', '986', '952'].includes(code)) {
+  if (['971', '972', '973', '974', '981', '982', '983', '984', '986', '952'].includes(code)) {
     label = ''
 
     if (codeMatch) {
@@ -381,7 +386,7 @@ function getProductDisplay(product) {
 function getMenuItemNameClass(name) {
   const text = String(name || '')
 
-  if (text.includes('マヨネーズ風味')) {
+  if (text.includes('ﾏﾖﾈｰｽﾞ風味')) {
     return 'menu-item-name name-mayonnaise'
   }
 
@@ -578,7 +583,16 @@ function App() {
     }
   }, [order])
 
-  function addToOrder(product) {
+  // --------------------------------------------------
+// 通常商品を注文内容へ追加する処理
+// --------------------------------------------------
+// ・品切れ設定されている商品は追加しない
+// ・同じ商品がすでに注文にある場合は数量を1個増やす
+// ・まだ注文にない商品なら、商品番号・商品名・価格・数量を新規追加する
+// ・最後に追加した商品の情報を更新し、画面上部の「追加：商品名 ×数量」に反映する
+// ・商品ボタンを押しただけでは注文内容画面へ移動しない
+// --------------------------------------------------
+function addToOrder(product) {
     if (soldOut[product.id]) {
       return
     }
@@ -625,7 +639,14 @@ function App() {
 
   }
 
-  function changeQuantity(id, amount) {
+  // --------------------------------------------------
+// 注文商品の数量を増減する処理
+// --------------------------------------------------
+// ・amountが+1なら数量を1つ増やす
+// ・amountが-1なら数量を1つ減らす
+// ・数量が0以下になった商品は注文一覧から削除する
+// --------------------------------------------------
+function changeQuantity(id, amount) {
     setOrder((current) =>
       current
         .map((item) =>
@@ -643,7 +664,17 @@ function App() {
     )
   }
 
-  function confirmOrder() {
+  // --------------------------------------------------
+// 現在の注文を確定して履歴へ保存する処理
+// --------------------------------------------------
+// ・注文が空の場合は何もしない
+// ・注文日時、注文商品、合計金額を1件の履歴データとして作成する
+// ・新しい履歴を履歴一覧の先頭へ追加する
+// ・確定後は現在の注文を空に戻す
+// ・送料選択状態と上部の追加商品表示もリセットして注文画面へ戻る
+// ・「注文を確定しました」のポップアップは表示しない
+// --------------------------------------------------
+function confirmOrder() {
     if (order.length === 0) {
       return
     }
@@ -687,7 +718,14 @@ function App() {
     )
   }
 
-  function toggleSoldOut(productId) {
+  // --------------------------------------------------
+// 商品の品切れ／販売中を切り替える処理
+// --------------------------------------------------
+// ・対象商品のIDをキーにして現在の状態を反転する
+// ・品切れにすると通常の商品ボタンは押せなくなる
+// ・状態はuseEffectを通してlocalStorageにも保存される
+// --------------------------------------------------
+function toggleSoldOut(productId) {
     setSoldOut((current) => ({
       ...current,
       [productId]:
@@ -695,7 +733,16 @@ function App() {
     }))
   }
 
-  function changeCategory(
+  // --------------------------------------------------
+// スワイプによってカテゴリーを前後へ切り替える処理
+// --------------------------------------------------
+// ・現在選択中のカテゴリー位置を探す
+// ・nextなら次のカテゴリー、prevなら前のカテゴリーへ移動する
+// ・端まで到達している場合は、それ以上移動しない
+// ・切り替え時にスライド用CSSクラスを設定し、短時間後に解除する
+// ・送料カテゴリーから別カテゴリーへ移動した場合は地域選択状態も解除する
+// --------------------------------------------------
+function changeCategory(
     id,
     direction,
   ) {
@@ -796,7 +843,16 @@ function App() {
     )
   }
 
-  function addShippingToOrder(
+  // --------------------------------------------------
+// 選択した送料を注文内容へ追加する処理
+// --------------------------------------------------
+// ・1段階目で選択した地域と2段階目で選択した個数から送料商品を作る
+// ・同じ送料がすでに注文にある場合は数量を1つ増やす
+// ・まだない場合は送料を新しい注文商品として追加する
+// ・追加後は地域選択状態を解除し、次の送料を選べる状態に戻す
+// ・上部の「追加：送料 ...」表示も更新する
+// --------------------------------------------------
+function addShippingToOrder(
     option,
   ) {
     const shippingProduct = {
@@ -858,7 +914,15 @@ function App() {
     }
   }
 
-  function handleCategoryPointerDown(event, category) {
+  // --------------------------------------------------
+// カテゴリーボタンの通常タップ／長押し開始を判定する処理
+// --------------------------------------------------
+// ・通常のタップならカテゴリー選択として扱う
+// ・500ms以上押し続けると並べ替えモードへ切り替える
+// ・ドラッグ開始位置と対象カテゴリーIDを記録する
+// ・少しでも横方向へ動いた場合は、通常タップではなく並べ替え操作として扱う
+// --------------------------------------------------
+function handleCategoryPointerDown(event, category) {
     if (event.pointerType === 'mouse' && event.button !== 0) {
       return
     }
@@ -874,7 +938,15 @@ function App() {
     }, 500)
   }
 
-  function handleCategoryPointerMove(event) {
+  // --------------------------------------------------
+// カテゴリーを長押しした後にドラッグして並べ替える処理
+// --------------------------------------------------
+// ・並べ替えモードになる前は、横方向の移動量だけを記録する
+// ・並べ替えモード中は現在のポインター位置にあるボタンを調べる
+// ・元のカテゴリーを取り出し、移動先の位置へ差し込む
+// ・変更されたカテゴリー配列はuseEffectでlocalStorageへ保存される
+// --------------------------------------------------
+function handleCategoryPointerMove(event) {
     if (categoryDragId.current === null) {
       return
     }
@@ -953,7 +1025,14 @@ function App() {
     setCategoryReorderMode(false)
   }
 
-  function selectCategory(id) {
+  // --------------------------------------------------
+// カテゴリーをタップして選択する処理
+// --------------------------------------------------
+// ・選択中カテゴリーIDを更新する
+// ・送料カテゴリーで選んでいた地域があれば解除する
+// ・カテゴリー切り替えアニメーション状態をリセットする
+// --------------------------------------------------
+function selectCategory(id) {
     setSelectedCategory(id)
 
     setSelectedShippingRegion(null)
@@ -1209,6 +1288,18 @@ function App() {
           >
             <div
               className={`menu-scroll ${slideDirection}`}
+              style={{
+                // 商品数を2列で並べたときに必要になる行数を計算します。
+                // 例えば11商品なら、2列×6行になるため6行分の高さを確保します。
+                // カテゴリごとに商品数が違っても、この値をCSSへ渡すことで
+                // そのカテゴリの商品ボタンを画面内へ均等に収めます。
+                '--menu-row-count': Math.max(
+                  1,
+                  Math.ceil(
+                    (currentCategory?.items?.length || 0) / 2,
+                  ),
+                ),
+              }}
             >
               {currentCategory?.items.map(
                 (product) => {
