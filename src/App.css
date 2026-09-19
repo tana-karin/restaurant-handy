@@ -148,7 +148,7 @@ button:disabled {
   width: 100%;
 
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
 
   background: #fff;
 
@@ -240,9 +240,10 @@ button:disabled {
 }
 
 .category-button {
-  flex: 0 0 auto;
+  flex: 1 0 78px;
 
-  min-width: 72px;
+  min-width: 78px;
+
   min-height: 38px;
 
   padding: 4px 10px;
@@ -274,28 +275,7 @@ button:disabled {
   color: #f97316;
 }
 
-/* 現在のカテゴリ名 */
-
-.current-category-name {
-  width: 100%;
-
-  min-height: 38px;
-
-  padding: 4px 10px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  text-align: center;
-
-  font-size: 17px;
-  font-weight: 800;
-
-  line-height: 1.15;
-
-  color: #222;
-}
+/* 現在のカテゴリ名は表示しない */
 
 /* =========================
    メニュー商品エリア
@@ -305,15 +285,11 @@ button:disabled {
   position: relative;
 
   flex: 1 1 auto;
-
   min-height: 0;
-
   width: 100%;
 
   overflow: hidden;
-
   touch-action: pan-y;
-
   background: #f8f8f8;
 }
 
@@ -322,23 +298,15 @@ button:disabled {
   height: 100%;
 
   display: grid;
-
   grid-template-columns: repeat(2, minmax(0, 1fr));
-
-  /*
-    商品数に合わせて
-    画面いっぱいまで縦に広げる
-  */
-  grid-auto-rows: minmax(64px, 1fr);
+  grid-auto-rows: 92px;
+  align-content: start;
 
   gap: 7px;
-
   padding: 7px 8px 40px;
 
   overflow-y: auto;
-
   -webkit-overflow-scrolling: touch;
-
   overscroll-behavior: contain;
 }
 
@@ -351,140 +319,145 @@ button:disabled {
 
   width: 100%;
   min-width: 0;
-  min-height: 64px;
+  height: 92px;
+  min-height: 92px;
 
-  padding: 2px 5px;
+  padding: 5px 7px;
 
   border: 1px solid #fed7aa;
   border-radius: 8px;
 
   background: #fff7ed;
-
   color: #222;
 
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 8px;
 
-  align-items: center;
-  justify-content: space-between;
-
-  text-align: center;
-
+  text-align: left;
   overflow: hidden;
 
-  box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 
-  transition:
-    transform 0.08s ease,
-    background 0.08s ease;
+  transition: transform 0.08s ease, background 0.08s ease;
 }
 
 .menu-item:active {
   transform: scale(0.98);
-
   background: #ffedd5;
 }
 
-/* =========================
-   商品名
-   ボタン上部
-========================= */
+.menu-item-image,
+.menu-item-image-placeholder {
+  flex: 0 0 72px;
+  width: 72px;
+  height: 80px;
+  min-width: 72px;
+  min-height: 80px;
 
-.menu-item-name {
-  flex: 0 0 auto;
-
-  width: 100%;
-
-  padding: 1px 2px 0;
-
-  color: #222;
-
-  font-size: 14px;
-  font-weight: 800;
-
-  line-height: 1.05;
-
-  text-align: center;
-
-  white-space: normal;
-
-  overflow: hidden;
-
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-}
-
-/* =========================
-   商品画像
-   ★ここを安定表示用に変更
-========================= */
-
-.menu-item-image {
   display: block;
-
-  width: 100%;
-
-  /*
-    商品名と価格の間を画像領域として確保
-  */
-  flex: 1 1 0;
-
-  height: 100%;
-
-  min-height: 32px;
-  min-width: 0;
-
-  margin: 0;
-
   object-fit: contain;
-  object-position: center center;
+  object-position: center;
 
-  /*
-    画像がボタンからはみ出さないようにする
-  */
-  max-width: 100%;
-  max-height: 100%;
+  align-self: center;
 }
 
-/* =========================
-   値段
-   ボタン下部
-========================= */
-
-.menu-item-price {
-  flex: 0 0 auto;
-
-  width: 100%;
-
-  padding: 0 2px 1px;
-
-  color: #f97316;
-
-  font-size: 18px;
-  font-weight: 900;
-
-  line-height: 1;
-
-  text-align: center;
-
-  white-space: nowrap;
+.menu-item-image-placeholder {
+  border-radius: 4px;
 }
 
-/* =========================
-   画像がない商品
-========================= */
-
-.menu-item-no-image {
+.menu-item-info {
   flex: 1 1 auto;
-
+  min-width: 0;
   min-height: 0;
 
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
 }
+
+.menu-item-heading {
+  flex: 0 0 auto;
+  width: 100%;
+  min-height: 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 5px;
+
+  padding: 1px 0 0;
+  white-space: nowrap;
+}
+
+.menu-item-code {
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.menu-item-label {
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.menu-item-name {
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 0;
+  padding: 1px 0;
+
+  color: #222;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+
+  overflow: hidden;
+}
+
+.menu-item-name.name-long {
+  font-size: 15px;
+}
+
+.menu-item-name.name-extra-long {
+  font-size: 13px;
+}
+
+.menu-item-name > span:first-child,
+.menu-item-subname {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: clip;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.menu-item-subname {
+  margin-top: 2px;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.05;
+}
+
+.menu-item-price {
+  flex: 0 0 auto;
+  width: 100%;
+  padding: 0 0 1px;
+
+  color: #f97316;
+  font-size: 17px;
+  font-weight: 900;
+  line-height: 1;
+  text-align: left;
+  white-space: nowrap;
+}
+
 
 /* =========================
    品切れ商品
@@ -619,69 +592,59 @@ button:disabled {
 
 .shipping-panel {
   flex: 1 1 auto;
-
   min-height: 0;
-
   width: 100%;
-
   padding: 10px;
 
-  overflow-y: auto;
-
+  overflow: hidden;
   background: #f8f8f8;
+
+  display: flex;
+  flex-direction: column;
 }
 
 .shipping-title {
+  flex: 0 0 auto;
   padding: 4px 0 10px;
-
   text-align: center;
-
   font-size: 18px;
   font-weight: 800;
 }
 
 .shipping-selected-region {
+  flex: 0 0 auto;
   margin-bottom: 8px;
-
-  padding: 10px;
-
+  padding: 8px 10px;
   border-radius: 8px;
-
   background: #fff7ed;
-
   color: #f97316;
-
   font-size: 16px;
   font-weight: 800;
-
+  line-height: 1.2;
   text-align: center;
 }
 
 .shipping-region-grid {
+  flex: 1 1 auto;
+  min-height: 0;
+
   display: grid;
-
   grid-template-columns: repeat(2, minmax(0, 1fr));
-
+  grid-auto-rows: minmax(0, 1fr);
   gap: 8px;
 }
 
 .shipping-region-button {
-  min-height: 72px;
-
+  min-height: 0;
   padding: 8px;
 
   border: 1px solid #fed7aa;
   border-radius: 10px;
-
   background: #fff;
-
   color: #333;
-
   font-size: 14px;
   font-weight: 700;
-
   line-height: 1.25;
-
   text-align: center;
 }
 
@@ -691,29 +654,27 @@ button:disabled {
 }
 
 .shipping-options-grid {
+  flex: 1 1 auto;
+  min-height: 0;
+
   display: grid;
-
   grid-template-columns: repeat(2, minmax(0, 1fr));
-
+  grid-template-rows: repeat(2, minmax(0, 1fr));
   gap: 8px;
 }
 
 .shipping-option-button {
-  min-height: 82px;
-
+  min-height: 0;
   padding: 8px;
 
   border: 1px solid #fed7aa;
   border-radius: 10px;
-
   background: #fff7ed;
 
   display: flex;
   flex-direction: column;
-
   align-items: center;
   justify-content: center;
-
   gap: 7px;
 }
 
@@ -724,32 +685,30 @@ button:disabled {
 
 .shipping-option-price {
   color: #f97316;
-
   font-size: 21px;
   font-weight: 900;
 }
 
 .shipping-back-button {
+  flex: 0 0 132px;
   width: 100%;
-
-  min-height: 44px;
+  height: 132px;
+  min-height: 132px;
 
   margin-top: 12px;
 
   border: 1px solid #ccc;
   border-radius: 8px;
-
   background: #fff;
-
   color: #555;
-
-  font-size: 14px;
+  font-size: 17px;
   font-weight: 700;
 }
 
 /* =========================
    注文内容
 ========================= */
+
 
 .order-content-screen {
   flex: 1 1 auto;
@@ -781,76 +740,118 @@ button:disabled {
 .order-item {
   position: relative;
 
-  margin-bottom: 7px;
+  flex: 0 0 112px;
+  height: 112px;
+  min-height: 112px;
+  max-height: 112px;
 
-  padding: 9px 10px;
+  margin-bottom: 7px;
+  padding: 8px 10px;
 
   border: 1px solid #eee;
   border-radius: 8px;
-
   background: #fff;
 
   display: grid;
+  grid-template-columns: 82px minmax(0, 1fr) auto;
+  grid-template-rows: minmax(0, 1fr) 38px;
+  gap: 4px 8px;
 
-  grid-template-columns:
-    minmax(0, 1fr)
-    auto;
+  overflow: hidden;
+}
 
-  grid-template-rows:
-    auto auto;
+.order-item-image {
+  grid-column: 1;
+  grid-row: 1 / 3;
 
-  gap: 5px 8px;
+  width: 82px;
+  height: 92px;
+  min-width: 0;
+  min-height: 0;
+
+  display: block;
+  object-fit: contain;
+  object-position: center;
+}
+
+.order-item-info {
+  grid-column: 2 / 4;
+  grid-row: 1;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .order-item-name {
   min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
 
-  font-size: 15px;
+.order-item-heading {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 2px;
+  white-space: nowrap;
+}
+
+.order-item-code {
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.order-item-label {
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.order-item-name-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.1;
+  overflow: hidden;
+}
+
+.order-item-name-text > span:first-child,
+.order-item-subname {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.order-item-subname {
+  margin-top: 2px;
+  font-size: 14px;
   font-weight: 700;
-
-  overflow-wrap: anywhere;
+  line-height: 1.05;
 }
 
 .order-item-price {
-  color: #f97316;
+  grid-column: 3;
+  grid-row: 1;
+  align-self: start;
+  justify-self: end;
 
+  color: #f97316;
   font-size: 15px;
   font-weight: 800;
-
   white-space: nowrap;
 }
 
 .quantity-controls {
-  grid-column: 1 / -1;
+  grid-column: 2 / 4;
+  grid-row: 2;
 
   display: flex;
-
   align-items: center;
   justify-content: flex-end;
-
   gap: 10px;
-}
-
-.quantity-controls button {
-  width: 34px;
-  height: 34px;
-
-  border: 1px solid #ddd;
-  border-radius: 7px;
-
-  background: #fff;
-
-  font-size: 20px;
-  font-weight: 700;
-}
-
-.quantity-controls span {
-  min-width: 25px;
-
-  text-align: center;
-
-  font-size: 17px;
-  font-weight: 800;
 }
 
 .empty-order {
@@ -870,7 +871,7 @@ button:disabled {
 .total-row {
   flex: 0 0 auto;
 
-  min-height: 48px;
+  min-height: 96px;
 
   padding: 5px 10px;
 
@@ -901,10 +902,10 @@ button:disabled {
 ========================= */
 
 .confirm {
-  flex: 0 0 48px;
+  flex: 0 0 96px;
 
   width: 100%;
-  height: 48px;
+  height: 96px;
 
   margin-top: 5px;
 
@@ -1072,7 +1073,8 @@ button:disabled {
 .sold-out-grid {
   display: grid;
 
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
 
   gap: 7px;
 }
@@ -1153,7 +1155,8 @@ button:disabled {
 
   .category-button {
     min-height: 36px;
-    min-width: 68px;
+
+    min-width: 72px;
 
     font-size: 11px;
   }
@@ -1182,7 +1185,21 @@ button:disabled {
   }
 
   .menu-item-name {
-    font-size: 13px;
+    font-size: 18px;
+  }
+
+  .menu-item-image {
+    flex-basis: 40%;
+    width: 40%;
+  }
+
+  .order-item {
+    grid-template-columns: 72px minmax(0, 1fr) auto;
+  }
+
+  .order-item-image {
+    width: 72px;
+    height: 92px;
   }
 
   .menu-item-price {
@@ -1221,7 +1238,7 @@ button:disabled {
   }
 
   .menu-item-name {
-    font-size: 12px;
+    font-size: 17px;
   }
 
   .menu-item-price {
@@ -1230,5 +1247,606 @@ button:disabled {
 
   .total-row strong {
     font-size: 27px;
+  }
+}
+
+/* ===== 今回の表示調整 ===== */
+.shipping-title { font-size: 26px; }
+.shipping-region-button { font-size: 20px; }
+.shipping-selected-region { font-size: 21px; padding: 10px; }
+.shipping-selected-region br + * { font-size: 1.15em; }
+.shipping-selected-region { line-height: 1.35; }
+
+/* 中部の括弧部分を大きく2行表示 */
+.shipping-region-button { white-space: normal; }
+
+/* 画像なし商品も画像あり商品と同じく、情報を右側へ */
+.menu-item { position: relative; }
+.menu-item-image { flex: 0 0 42%; width: 42%; height: 100%; }
+.menu-item-info { flex: 1 1 auto; min-width: 0; height: 100%; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; text-align: left; padding: 4px 5px; }
+.menu-item:not(:has(.menu-item-image)) .menu-item-info { margin-left: 42%; width: 58%; }
+.menu-item:not(:has(.menu-item-image)) { justify-content: flex-start; }
+
+
+/* 送料の個数選択は画面内で自動伸縮 */
+.shipping-options-grid { flex: 1 1 auto; min-height: 0; }
+.shipping-option-button { min-height: 0; }
+
+/* 注文内容を最新仕様に固定 */
+.order-item { min-height: 112px; height: 112px; max-height: 112px; display: flex; align-items: stretch; }
+.order-item-image { flex: 0 0 38%; width: 38%; height: 100%; object-fit: contain; }
+.order-item-info { flex: 1 1 auto; min-width: 0; position: relative; padding: 8px 8px 6px; }
+
+
+/* ===== 今回の最終調整 ===== */
+.shipping-title {
+  font-size: 26px;
+}
+
+.shipping-region-button {
+  font-size: 20px;
+  line-height: 1.2;
+}
+
+.shipping-region-name {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.shipping-region-main {
+  display: block;
+  font-size: 21px;
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+.shipping-region-detail {
+  display: block;
+  margin-top: 5px;
+  font-size: 19px;
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+/* 中部は括弧を2行全体につなげる */
+.shipping-region-detail-chubu {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  width: 100%;
+  padding: 0 44px;
+  margin-top: 4px;
+}
+
+.shipping-region-lines {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1.18;
+  white-space: normal;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.shipping-bracket {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 38px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.shipping-bracket-left {
+  left: 5px;
+}
+
+.shipping-bracket-right {
+  right: 5px;
+}
+
+.shipping-selected-region {
+  font-size: 22px;
+  line-height: 1.25;
+}
+
+.shipping-selected-region .shipping-region-detail {
+  font-size: 20px;
+}
+
+.shipping-selected-region .shipping-region-detail-chubu {
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+.shipping-selected-region .shipping-bracket {
+  font-size: 42px;
+}
+
+/* 地域名の長さをそろえて、2列のバランスを整える */
+.shipping-region-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shipping-region-button .shipping-region-name {
+  max-width: 100%;
+}
+
+.shipping-region-name-chubu .shipping-region-main {
+  font-size: 20px;
+}
+
+.shipping-region-name-chubu .shipping-region-detail {
+  font-size: 16px;
+}
+
+
+/* 上部の「追加：商品 ×数量」を押すと注文内容へ移動 */
+.latest-product {
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  text-align: left;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.latest-product:active {
+  opacity: 0.8;
+}
+
+.menu-item:not(:has(.menu-item-image)) .menu-item-info {
+  margin-left: 42%;
+  width: 58%;
+}
+
+
+/* ===== 最新版：カテゴリ配置を均等化 ===== */
+.category-buttons {
+  gap: 6px;
+  justify-content: space-between;
+}
+
+.category-button {
+  flex: 1 0 78px;
+  min-width: 78px;
+}
+
+/* 画像なし商品も画像ありと同じ位置から情報を開始 */
+.menu-item:not(:has(.menu-item-image)) .menu-item-info {
+  margin-left: 42%;
+  width: 58%;
+}
+
+/* 長い商品名は最後まで見えるように調整 */
+.menu-item-name.name-long {
+  font-size: 16px;
+}
+
+.menu-item-name.name-extra-long {
+  font-size: 14px;
+}
+
+/* 中部の地域名は括弧と文字が重ならないよう余白を確保 */
+.shipping-region-detail-chubu {
+  padding-left: 44px;
+  padding-right: 44px;
+}
+
+.shipping-region-lines {
+  white-space: normal;
+}
+
+
+/* ===== 商品ボタン最終調整 ===== */
+.menu-item-image,
+.menu-item-image-placeholder {
+  flex: 0 0 42%;
+  width: 42%;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+}
+
+.menu-item-image {
+  display: block;
+  object-fit: contain;
+  object-position: center;
+}
+
+.menu-item-image-placeholder {
+  display: block;
+}
+
+/* 画像がない商品でも、画像あり商品と同じ右側の位置から情報を開始 */
+.menu-item-info {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  margin-left: 0 !important;
+  padding: 4px 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  text-align: left;
+}
+
+/* 商品名は原則1行。長い名前だけ文字を小さくする */
+.menu-item-name {
+  width: 100%;
+  min-width: 0;
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1.08;
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.menu-item-name > span:first-child {
+  display: block;
+  width: 100%;
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.menu-item-name.name-long {
+  font-size: 14px;
+}
+
+.menu-item-name.name-extra-long {
+  font-size: 12px;
+}
+
+.menu-item-subname {
+  display: block;
+  margin-top: 2px;
+  font-size: 13px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* カテゴリは7等分して画面幅いっぱいに配置 */
+.category-buttons {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 5px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.category-button {
+  width: 100%;
+  min-width: 0;
+  flex: none;
+  padding: 4px 2px;
+  font-size: 11px;
+  line-height: 1.05;
+}
+
+/* 中部の2行表示 */
+.shipping-region-name-chubu .shipping-region-main {
+  font-size: 20px;
+}
+
+.shipping-region-name-chubu .shipping-region-detail-chubu {
+  padding-left: 38px;
+  padding-right: 38px;
+}
+
+.shipping-region-name-chubu .shipping-region-lines {
+  font-size: 15px;
+  line-height: 1.18;
+  white-space: nowrap;
+}
+
+.shipping-region-name-chubu .shipping-bracket {
+  font-size: 36px;
+}
+
+/* 注文内容でも画像なし商品の右側位置を維持 */
+.order-item-image-placeholder {
+  flex: 0 0 38%;
+  width: 38%;
+  height: 100%;
+}
+
+
+/* ===== 商品表示の確定調整 ===== */
+.menu-item {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 7px;
+}
+
+.menu-item-image,
+.menu-item-image-placeholder {
+  flex: 0 0 42%;
+  width: 42%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.menu-item-image {
+  display: block;
+  object-fit: contain;
+  object-position: center;
+}
+
+.menu-item-image-placeholder {
+  display: block;
+}
+
+.menu-item-info {
+  flex: 1 1 58%;
+  width: 58%;
+  min-width: 0;
+  height: 100%;
+  margin-left: 0 !important;
+  padding: 4px 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  text-align: left;
+}
+
+/* 商品名は1行表示。長い名前だけ小さくする */
+.menu-item-name {
+  width: 100%;
+  min-width: 0;
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1.08;
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.menu-item-name > span:first-child {
+  display: block;
+  width: max-content;
+  max-width: none;
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.menu-item-name.name-long {
+  font-size: 14px;
+}
+
+.menu-item-name.name-extra-long {
+  font-size: 12px;
+}
+
+.menu-item-subname {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* 袋・パッキン系：コードを必ず1行目にする */
+.menu-item-heading {
+  min-height: 16px;
+  flex: 0 0 auto;
+}
+
+/* カテゴリ7個を画面幅に均等配置 */
+.category-buttons {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 5px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.category-button {
+  width: 100%;
+  min-width: 0;
+  padding: 4px 2px;
+  font-size: 11px;
+  line-height: 1.05;
+}
+
+/* 中部：文字に括弧が重ならないよう左右を確保 */
+.shipping-region-name-chubu .shipping-region-main {
+  font-size: 20px;
+}
+
+.shipping-region-name-chubu .shipping-region-detail-chubu {
+  position: relative;
+  width: 100%;
+  padding-left: 38px;
+  padding-right: 38px;
+}
+
+.shipping-region-name-chubu .shipping-region-lines {
+  font-size: 15px;
+  line-height: 1.18;
+  white-space: nowrap;
+}
+
+.shipping-region-name-chubu .shipping-bracket {
+  font-size: 36px;
+}
+
+/* 注文内容：画像なしでも右側から情報を開始 */
+.order-item-image-placeholder {
+  flex: 0 0 38%;
+  width: 38%;
+  height: 100%;
+}
+
+/* ===== 最新指定：カテゴリ配置・表示 ===== */
+.category-buttons {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 5px;
+  width: 100%;
+  padding: 5px 7px;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+
+.category-button {
+  width: 100%;
+  min-width: 0;
+  min-height: 38px;
+  padding: 4px 2px;
+  font-size: 11px;
+  line-height: 1.05;
+  white-space: normal;
+}
+
+.category-reorder-mode {
+  touch-action: none;
+}
+
+.category-reorder-mode .category-button {
+  cursor: grabbing;
+  user-select: none;
+}
+
+/* カテゴリ名はボタン下に重複表示しない */
+.current-category-name {
+  display: none;
+}
+
+/* ===== 画像なし商品も、画像ありと同じ右側に情報を置く ===== */
+.menu-item-image-placeholder {
+  flex: 0 0 42%;
+  width: 42%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  display: block;
+}
+
+.menu-item-info {
+  flex: 1 1 58%;
+  width: 58%;
+  min-width: 0;
+  height: 100%;
+  margin-left: 0 !important;
+  padding: 4px 5px;
+}
+
+/* 商品名は1行。長い商品だけ小さくする */
+.menu-item-name {
+  width: 100%;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.menu-item-name > span:first-child {
+  display: block;
+  width: max-content;
+  max-width: none;
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+/* 袋・パッキン系のコードは必ず単独1行 */
+.menu-item-heading {
+  flex: 0 0 auto;
+  width: 100%;
+  white-space: nowrap;
+}
+
+/* 中部：2行の文字に括弧を重ねない */
+.shipping-region-name-chubu .shipping-region-detail-chubu {
+  position: relative;
+  width: 100%;
+  padding-left: 42px;
+  padding-right: 42px;
+}
+
+.shipping-region-name-chubu .shipping-region-lines {
+  font-size: 15px;
+  line-height: 1.18;
+  white-space: nowrap;
+}
+
+.shipping-region-name-chubu .shipping-bracket {
+  font-size: 34px;
+}
+
+
+/* ===== 最終修正：商品ボタン表示 ===== */
+.menu-scroll {
+  /* 画面の高さに応じて商品ボタンの高さを自動調整 */
+  grid-auto-rows: minmax(64px, 12dvh);
+  align-content: start;
+}
+
+.menu-item {
+  height: auto;
+  min-height: 64px;
+}
+
+/* 画像がある商品だけ左側に画像を表示 */
+.menu-item-image {
+  flex: 0 0 42%;
+  width: 42%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  display: block;
+  object-fit: contain;
+  object-position: center;
+}
+
+/* 画像がない商品は画像スペースを作らず、情報を全面使用 */
+.menu-item-info {
+  flex: 1 1 auto;
+  width: auto;
+  min-width: 0;
+  height: 100%;
+  margin-left: 0 !important;
+  padding: 4px 5px;
+}
+
+.menu-item:not(:has(.menu-item-image)) .menu-item-info {
+  width: 100%;
+  flex: 1 1 100%;
+}
+
+/* 画像スペース用のダミー要素は使用しない */
+.menu-item-image-placeholder {
+  display: none !important;
+}
+
+@media (max-height: 700px) {
+  .menu-scroll {
+    grid-auto-rows: minmax(58px, 11dvh);
+  }
+}
+
+@media (min-height: 900px) {
+  .menu-scroll {
+    grid-auto-rows: minmax(72px, 13dvh);
   }
 }

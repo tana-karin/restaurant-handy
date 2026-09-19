@@ -11,18 +11,18 @@ export default defineConfig({
 
       includeAssets: [
         'favicon.svg',
+        'pwa-192x192.png',
+        'pwa-512x512.png',
+        'header-logo.png',
       ],
 
       manifest: {
-        name: '注文システム',
-        short_name: '注文システム',
+        name: '【非公式】TKK',
+        short_name: '【非公式】TKK',
         description: '店舗用注文システム',
-
         theme_color: '#f97316',
         background_color: '#ffffff',
-
         display: 'standalone',
-
         start_url: '/',
         scope: '/',
 
@@ -42,8 +42,12 @@ export default defineConfig({
 
       workbox: {
         globPatterns: [
-          '**/*.{js,css,html,ico,png,svg,woff2}',
+          '**/*.{js,css,html,ico,png,svg,jpg,jpeg,webp,woff2}',
         ],
+
+        // 商品画像が2MBを超えていても
+        // オフライン用キャッシュに含める
+        maximumFileSizeToCacheInBytes: 25 * 1024 * 1024,
       },
     }),
   ],
