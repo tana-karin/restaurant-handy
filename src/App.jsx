@@ -16,8 +16,7 @@ const defaultCategories = [
       {
   id: 1,
   name: '001_味の宴',
-  price: 3600,
-  image: '/products/ajinoutage.png',
+        price: 3600,
 },
       { id: 2, name: '002_味くらべ', price: 2500 },
       { id: 3, name: '003_ころもち(個々包装)', price: 2700 },
@@ -306,14 +305,14 @@ function getProductDisplay(product) {
   const rawName = String(product.name || '')
 
   if (String(product.id || '').startsWith('shipping-')) {
-    const shippingMatch = rawName.match(/^送料\s+(.+?)\s+(\([^)]*\)|（[^）]*）)\s*$/)
+    const shippingMatch = rawName.match(/^送料\s+(.+?)(\([^)]*\)|（[^）]*）)\s+(.+)$/)
 
     if (shippingMatch) {
       return {
         code: '',
         label: '送料 ' + shippingMatch[1],
-        name: '',
-        subName: shippingMatch[2],
+        name: shippingMatch[2],
+        subName: shippingMatch[3],
       }
     }
 
@@ -804,7 +803,6 @@ function App() {
     })
 
     setSelectedShippingRegion(null)
-    setScreen('order-content')
   }
 
   function clearCategoryLongPress() {
@@ -1066,7 +1064,11 @@ function App() {
 
         {/* 送料 */}
         {isShippingCategory ? (
-          <section className="shipping-panel">
+          <section
+            className="shipping-panel"
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+          >
             {!selectedShippingRegion ? (
               <>
                 <div className="shipping-title">
@@ -1279,7 +1281,11 @@ function App() {
           ) : (
             order.map((item) => (
               <div
-                className="order-item"
+                className={
+                  String(item.id || '').startsWith('shipping-')
+                    ? 'order-item order-item-shipping'
+                    : 'order-item'
+                }
                 key={item.id}
               >
                 {getProductImage(item) ? (
