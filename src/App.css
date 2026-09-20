@@ -1258,6 +1258,9 @@ button:disabled {
   font-size: 10px;
 }
 
+.menu-item-name.name-mayonnaise {
+  font-size: 16px;
+}
 
 .menu-item:not(:has(.menu-item-image)) .menu-item-info {
   width: 100%;
@@ -1649,6 +1652,9 @@ button:disabled {
     font-size: 18px;
   }
 
+  .menu-item-name.name-mayonnaise {
+    font-size: 16px;
+  }
 
   .sold-out-label {
     font-size: 18px;
@@ -1680,6 +1686,9 @@ button:disabled {
     font-size: 13px;
   }
 
+  .menu-item-name.name-mayonnaise {
+    font-size: 16px;
+  }
 
   .menu-item-code,
   .menu-item-label {
@@ -1723,5 +1732,114 @@ button:disabled {
 
   .total-row strong {
     font-size: 27px;
+  }
+}
+
+
+/* ==================================================
+   今回の1〜4の修正
+   ※既存の注文・送料・商品表示の基本デザインは変更せず、
+     スマートフォンで問題になっていた箇所だけを上書きします。
+================================================== */
+
+/* 1. 001「味の宴」など画像のフォールバックを使うため、
+      商品画像そのもののサイズや配置は従来どおり維持します。 */
+
+/* 2. ﾏﾖﾈｰｽﾞ風味は特別な16px指定を解除し、
+      通常の商品名と同じサイズを使用します。
+      600px以下では15px、380px以下では13pxという既存の
+      .menu-item-name のサイズにそのまま従います。 */
+.menu-item-name.name-mayonnaise {
+  font-size: 1em;
+}
+
+/* 3. 注文内容の送料は地域名を3行に分けて表示し、
+      長い地域名がoverflow:hiddenで途中から切れないようにします。 */
+.order-item-shipping .order-item-info,
+.order-item-shipping .order-item-name,
+.order-item-shipping .order-item-name-text {
+  overflow: visible;
+}
+
+.order-item-shipping .order-item-name-text {
+  white-space: normal;
+  line-height: 1.25;
+}
+
+.order-item-shipping .order-item-name-text > span:first-child {
+  display: block;
+  white-space: nowrap;
+}
+
+.order-item-shipping .order-item-subname {
+  display: block;
+  margin: 3px 0 0;
+  white-space: nowrap;
+}
+
+.order-item-shipping .order-item-shipping-option {
+  display: block;
+  margin-top: 3px;
+  color: #f97316;
+  font-size: 16px;
+  font-weight: 900;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+
+/* 4. カテゴリは7個を画面幅いっぱいに均等配置します。
+      横スクロールはカテゴリ欄では使わず、商品一覧の左右スワイプと
+      長押しドラッグによるカテゴリ並べ替えを優先します。 */
+.category-buttons {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 4px;
+  padding: 5px 6px;
+  overflow: hidden;
+  -webkit-overflow-scrolling: auto;
+}
+
+.category-button {
+  width: 100%;
+  min-width: 0;
+  min-height: 42px;
+  padding: 3px 2px;
+  font-size: 11px;
+  line-height: 1.1;
+  white-space: normal;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.category-reorder-mode .category-button {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grabbing;
+}
+
+@media (max-width: 600px) {
+  .category-buttons {
+    gap: 4px;
+    padding: 5px 6px;
+  }
+
+  .category-button {
+    min-width: 0;
+    min-height: 42px;
+    padding: 3px 2px;
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 380px) {
+  .category-button {
+    min-width: 0;
+    min-height: 40px;
+    padding-left: 1px;
+    padding-right: 1px;
+    font-size: 9px;
   }
 }

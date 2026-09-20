@@ -194,6 +194,23 @@ function loadStorage(key, fallback) {
 // ・価格、商品画像、カテゴリー順など、商品名以外のデータは変更しない
 // ・保存データが配列ではない場合は、そのまま返して初期化側で処理する
 // --------------------------------------------------
+// --------------------------------------------------
+// 保存済み商品名を現在の表記へそろえる処理
+// --------------------------------------------------
+// ・以前のlocalStorageに全角の「マヨネーズ」「サラダ」などが残っていても、
+//   現在の指定表記で表示できるように商品名だけを変換します。
+// ・カテゴリ名や価格、商品ID、並び順などは変更しません。
+// ・この処理後も、現在のカテゴリ配列そのものはそのまま保存されるため、
+//   ユーザーが並べ替えたカテゴリ順も維持されます。
+// --------------------------------------------------
+function normalizeProductName(name) {
+  return String(name || '')
+    .replaceAll('マヨネーズ', 'ﾏﾖﾈｰｽﾞ')
+    .replaceAll('サラダ', 'ｻﾗﾀﾞ')
+    .replaceAll('ビニール', 'ﾋﾞﾆｰﾙ')
+    .replaceAll('パッキン', 'ﾊﾟｯｷﾝ')
+}
+
 function normalizeCategories(categories) {
   if (!Array.isArray(categories)) {
     return categories
@@ -224,7 +241,10 @@ function normalizeCategories(categories) {
             }
           }
 
-          return product
+          return {
+            ...product,
+            name: normalizeProductName(product?.name),
+          }
         })
       : [],
   }))
@@ -310,16 +330,30 @@ function getProductImageCandidates(product) {
     return []
   }
 
-  return [
+  const candidates = [
     `/products/${code}.png`,
     `/products/${code}.jpg`,
     `/products/${code}.jpeg`,
   ]
+
+  // 001「味の宴」は、画像ファイル名が商品番号ではなく
+  // 「味の宴.png」や既存のutageSS.jpgになっている場合にも表示できるようにします。
+  // 商品番号画像が存在する場合は、これまでどおり商品番号画像を最初に使用します。
+  if (code === '001') {
+    candidates.push('/products/味の宴.png')
+    candidates.push('/products/utageSS.jpg')
+    candidates.push('/味の宴.png')
+    candidates.push('/utageSS.jpg')
+    candidates.push('/utageSS(1).jpg')
+    candidates.push('/utageSS(2).jpg')
+  }
+
+  return candidates
 }
 
 function getProductDisplay(product) {
   if (!product) {
-    return { code: '', label: '', name: '', subName: '' }
+    return { code: '', label: '', name: '', subName: '', shippingOption: '' }
   }
 
   const rawName = String(product.name || '')
@@ -459,7 +493,8 @@ function renderOrderItemDisplay(item) {
         code: '',
         label: '送料 中部',
         name: '愛知・石川・岐阜・静岡',
-        subName: `富山・福井・三重 ${match[2]}`,
+        subName: '富山・福井・三重',
+        shippingOption: match[2],
       }
     }
     return {
@@ -467,7 +502,8 @@ function renderOrderItemDisplay(item) {
       code: '',
       label: '送料 中部',
       name: '長野・新潟',
-      subName: match[2],
+      subName: '',
+      shippingOption: match[2],
     }
   }
 
@@ -928,6 +964,17 @@ function handleCategoryPointerDown(event, category) {
     }
 
     clearCategoryLongPress()
+
+    // スマホの指がボタンの外へ移動しても、同じボタンでpointermove/upを受け取れるようにします。
+    // これにより長押し後のドラッグ並べ替えが途中で切れにくくなります。
+    if (event.currentTarget?.setPointerCapture && event.pointerId !== undefined) {
+      try {
+        event.currentTarget.setPointerCapture(event.pointerId)
+      } catch {
+        // Pointer Captureに対応していない環境では通常のpointerイベントをそのまま使用します。
+      }
+    }
+
     categoryDragId.current = category.id
     categoryDragStartX.current = event.clientX
     categoryDragMoved.current = false
@@ -953,6 +1000,13 @@ function handleCategoryPointerMove(event) {
 
     if (Math.abs(event.clientX - categoryDragStartX.current) > 8) {
       categoryDragMoved.current = true
+
+      // 長押し前に指が動いた場合は、通常のタップ判定を解除し、
+      // 500ms後に意図せず並べ替えモードへ入らないよう長押しタイマーも停止します。
+      if (!categoryReorderMode) {
+        clearCategoryLongPress()
+        return
+      }
     }
 
     if (!categoryReorderMode) {
@@ -1011,6 +1065,16 @@ function handleCategoryPointerMove(event) {
 
     if (wasReordering || moved) {
       event.preventDefault()
+    }
+
+    if (event.currentTarget?.releasePointerCapture && event.pointerId !== undefined) {
+      try {
+        if (event.currentTarget.hasPointerCapture?.(event.pointerId)) {
+          event.currentTarget.releasePointerCapture(event.pointerId)
+        }
+      } catch {
+        // Pointer Captureを解除できない環境では、そのまま終了します。
+      }
     }
 
     if (!wasReordering && !moved && draggedId !== null) {
@@ -1474,6 +1538,11 @@ function selectCategory(id) {
                           {display.subName && (
                             <span className="order-item-subname">
                               {display.subName}
+                            </span>
+                          )}
+                          {display.shippingOption && (
+                            <span className="order-item-shipping-option">
+                              {display.shippingOption}
                             </span>
                           )}
                         </div>
