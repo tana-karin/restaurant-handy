@@ -1504,22 +1504,53 @@ button:disabled {
 
 .order-item-shipping .order-item-info {
   min-width: 0;
+  width: 100%;
+  padding-right: 6px;
+  overflow: hidden;
+}
+
+/*
+  送料の文字は右側の金額欄へ入り込まないように、
+  折り返しを禁止して1行で表示します。
+  通常の商品より文字サイズを小さくすることで、
+  「送料 中部」「愛知・石川・岐阜・静岡」などの長い表示を
+  金額欄と分離したまま表示しやすくします。
+*/
+.order-item-shipping .order-item-heading {
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.order-item-shipping .order-item-label {
+  min-width: 0;
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
 }
 
 .order-item-shipping .order-item-name-text {
-  white-space: normal;
-  line-height: 1.25;
+  width: 100%;
+  min-width: 0;
+  margin-top: 2px;
+  font-size: 12px;
+  line-height: 1.15;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
 }
 
 .order-item-shipping .order-item-name-text > span:first-child {
-  display: block;
+  display: inline;
   white-space: nowrap;
 }
 
 .order-item-shipping .order-item-subname {
-  display: block;
+  display: inline;
+  margin-left: 3px;
   white-space: nowrap;
-  margin-top: 3px;
 }
 
 /* =========================
@@ -1755,25 +1786,30 @@ button:disabled {
 
 /* 3. 注文内容の送料は地域名を3行に分けて表示し、
       長い地域名がoverflow:hiddenで途中から切れないようにします。 */
+/*
+  注文内容の送料は折り返さず、右側の金額欄と重ならないようにします。
+  長い地域名は送料専用の小さい文字サイズで表示します。
+*/
 .order-item-shipping .order-item-info,
 .order-item-shipping .order-item-name,
 .order-item-shipping .order-item-name-text {
-  overflow: visible;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .order-item-shipping .order-item-name-text {
-  white-space: normal;
-  line-height: 1.25;
+  white-space: nowrap;
+  line-height: 1.15;
 }
 
 .order-item-shipping .order-item-name-text > span:first-child {
-  display: block;
+  display: inline;
   white-space: nowrap;
 }
 
 .order-item-shipping .order-item-subname {
-  display: block;
-  margin: 3px 0 0;
+  display: inline;
+  margin: 0 0 0 3px;
   white-space: nowrap;
 }
 

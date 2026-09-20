@@ -258,7 +258,9 @@ function renderCategoryName(category) {
   if (category.name === '小袋（10袋入）ケース') {
     return (
       <>
-        小袋(10袋入)
+        小袋
+        <br />
+        (10袋入)
         <br />
         ケース
       </>
@@ -278,9 +280,28 @@ function renderCategoryName(category) {
   if (category.name === '袋・パッキン・その他') {
     return (
       <>
-        袋・パッキン
+        袋
+        <br />
+        パッキン
         <br />
         その他
+      </>
+    )
+  }
+    if (category.name === '割れおかき') {
+    return (
+      <>
+        割れ
+        <br />
+        おかき
+      </>
+    )
+  }  if (category.name === '詰替パック') {
+    return (
+      <>
+        詰替
+        <br />
+        パック
       </>
     )
   }
@@ -336,17 +357,7 @@ function getProductImageCandidates(product) {
     `/products/${code}.jpeg`,
   ]
 
-  // 001「味の宴」は、画像ファイル名が商品番号ではなく
-  // 「味の宴.png」や既存のutageSS.jpgになっている場合にも表示できるようにします。
-  // 商品番号画像が存在する場合は、これまでどおり商品番号画像を最初に使用します。
-  if (code === '001') {
-    candidates.push('/products/味の宴.png')
-    candidates.push('/products/utageSS.jpg')
-    candidates.push('/味の宴.png')
-    candidates.push('/utageSS.jpg')
-    candidates.push('/utageSS(1).jpg')
-    candidates.push('/utageSS(2).jpg')
-  }
+
 
   return candidates
 }
