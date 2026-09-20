@@ -328,11 +328,14 @@ function getProductImage(product) {
   }
 
 
-  if (product.image) {
+  const code = getProductCode(product)
+
+  // 001「味の宴」は、以前の保存データに古いimage情報が残っていても、
+  // 商品番号001の画像ではなく、登録済みの味の宴用画像候補へ進めるようにします。
+  // 001以外の商品は、これまでどおり商品自身に設定されたimageを最優先します。
+  if (code !== '001' && product.image) {
     return product.image
   }
-
-  const code = getProductCode(product)
 
   return code ? `/products/${code}.png` : null
 }
@@ -343,11 +346,14 @@ function getProductImageCandidates(product) {
   }
 
 
-  if (product.image) {
+  const code = getProductCode(product)
+
+  // 001「味の宴」は古いimage情報がlocalStorageに残っていても、
+  // 下記の画像候補を順番に試せるようにします。
+  // 001以外の商品は、これまでどおり設定済みimageを最初に使用します。
+  if (code !== '001' && product.image) {
     return [product.image]
   }
-
-  const code = getProductCode(product)
 
   if (!code) {
     return []
