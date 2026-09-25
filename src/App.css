@@ -459,23 +459,6 @@ button:disabled {
   white-space: nowrap;
 }
 
-/* =========================
-   画像がない商品の場合
-========================= */
-
-.menu-item:not(:has(.menu-item-image)) {
-  justify-content: space-between;
-}
-
-.menu-item:not(:has(.menu-item-image))
-  .menu-item-name {
-  margin-top: 2px;
-}
-
-.menu-item:not(:has(.menu-item-image))
-  .menu-item-price {
-  margin-bottom: 2px;
-}
 
 /* =========================
    品切れ商品
