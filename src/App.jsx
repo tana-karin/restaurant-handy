@@ -34,7 +34,7 @@ const defaultCategories = [
     id: 2,
     name: '小袋（10袋入）ケース',
     items: [
-      { id: 101, name: '100_袋入 詰め合わせ', price: 3600 },
+      { id: 101, name: '100_袋入 詰合せ', price: 3600 },
       { id: 102, name: '104_袋入 ころもち', price: 3800 },
       { id: 103, name: '105_袋入 華の友', price: 3800 },
       { id: 104, name: '109_袋入 ﾏﾖﾈｰｽﾞ風味', price: 3600 },
@@ -62,16 +62,11 @@ const defaultCategories = [
     id: 4,
     name: '送料',
     items: [
-      { id: 301, name: '近畿・中国', price: 500 },
-      { id: 302, name: '関東・四国・九州', price: 600 },
-      {
-        id: 303,
-        name: '中部(愛知・石川・岐阜・静岡・富山・福井・三重)',
-        price: 500,
-      },
-      { id: 304, name: '中部（長野・新潟）', price: 600 },
-      { id: 305, name: '東北', price: 900 },
-      { id: 306, name: '北海道・沖縄', price: 1300 },
+      { id: 301, name: '901_近距離', price: 500 },
+      { id: 302, name: '902_中距離', price: 600 },
+      { id: 305, name: '905_遠距離', price: 900 },
+      { id: 306, name: '906_北海道・沖縄', price: 1300 },
+      { id: 994, name: '994_送料', price: 0 },
     ],
   },
   {
@@ -120,46 +115,32 @@ const defaultCategories = [
 ]
 
 const shippingOptions = {
-  '近畿・中国': [
-    { id: 'kinki-1', name: '1缶', price: 500 },
-    { id: 'kinki-2-3', name: '2～3缶', price: 600 },
-    { id: 'kinki-4-6', name: '4～6缶', price: 700 },
-    { id: 'kinki-7-8', name: '7～8缶', price: 800 },
+  近距離: [
+    { id: 'near-1', name: '1缶', price: 500 },
+    { id: 'near-2-3', name: '2・3缶\n1ケース\n1缶+1ケース', price: 600 },
+    { id: 'near-4-6', name: '4・5・6缶\n2・3ケース\n1缶+2ケース\n2・3缶+1ケース', price: 700 },
+    { id: 'near-7-8', name: '7・8缶\n4ケース\n2・3缶+2ケース\n4缶+1ケース', price: 800 },
   ],
 
-  '関東・四国・九州': [
-    { id: 'kanto-1', name: '1缶', price: 600 },
-    { id: 'kanto-2-3', name: '2～3缶', price: 700 },
-    { id: 'kanto-4-6', name: '4～6缶', price: 800 },
-    { id: 'kanto-7-8', name: '7～8缶', price: 900 },
+  中距離: [
+    { id: 'middle-1', name: '1缶', price: 600 },
+    { id: 'middle-2-3', name: '2・3缶\n1ケース\n1缶+1ケース', price: 700 },
+    { id: 'middle-4-6', name: '4・5・6缶\n2・3ケース\n1缶+2ケース\n2・3缶+1ケース', price: 800 },
+    { id: 'middle-7-8', name: '7・8缶\n4ケース\n2・3缶+2ケース\n4缶+1ケース', price: 900 },
   ],
 
-  '中部(愛知・石川・岐阜・静岡・富山・福井・三重)': [
-    { id: 'chubu-aichi-1', name: '1缶', price: 500 },
-    { id: 'chubu-aichi-2-3', name: '2～3缶', price: 600 },
-    { id: 'chubu-aichi-4-6', name: '4～6缶', price: 700 },
-    { id: 'chubu-aichi-7-8', name: '7～8缶', price: 800 },
-  ],
-
-  '中部（長野・新潟）': [
-    { id: 'chubu-nagano-1', name: '1缶', price: 600 },
-    { id: 'chubu-nagano-2-3', name: '2～3缶', price: 700 },
-    { id: 'chubu-nagano-4-6', name: '4～6缶', price: 800 },
-    { id: 'chubu-nagano-7-8', name: '7～8缶', price: 900 },
-  ],
-
-  東北: [
-    { id: 'tohoku-1', name: '1缶', price: 900 },
-    { id: 'tohoku-2-3', name: '2～3缶', price: 900 },
-    { id: 'tohoku-4-6', name: '4～6缶', price: 1000 },
-    { id: 'tohoku-7-8', name: '7～8缶', price: 1000 },
+  遠距離: [
+    { id: 'far-1', name: '1缶', price: 900 },
+    { id: 'far-2-3', name: '2・3缶\n1ケース\n1缶+1ケース', price: 900 },
+    { id: 'far-4-6', name: '4・5・6缶\n2・3ケース\n1缶+2ケース\n2・3缶+1ケース', price: 1000 },
+    { id: 'far-7-8', name: '7・8缶\n4ケース\n2・3缶+2ケース\n4缶+1ケース', price: 1000 },
   ],
 
   '北海道・沖縄': [
     { id: 'hokkaido-1', name: '1缶', price: 1300 },
-    { id: 'hokkaido-2-3', name: '2～3缶', price: 1300 },
-    { id: 'hokkaido-4-6', name: '4～6缶', price: 1400 },
-    { id: 'hokkaido-7-8', name: '7～8缶', price: 1400 },
+    { id: 'hokkaido-2-3', name: '2・3缶\n1ケース\n1缶+1ケース', price: 1300 },
+    { id: 'hokkaido-4-6', name: '4・5・6缶\n2・3ケース\n1缶+2ケース\n2・3缶+1ケース', price: 1400 },
+    { id: 'hokkaido-7-8', name: '7・8缶\n4ケース\n2・3缶+2ケース\n4缶+1ケース', price: 1400 },
   ],
 }
 
@@ -171,6 +152,89 @@ const shippingOptions = {
 // ・保存データがない場合、または壊れたJSONの場合はfallbackを返す
 // ・この処理により、保存データの異常でアプリ全体が停止するのを防ぐ
 // --------------------------------------------------
+const shippingInitials = [
+  'あ', 'い', 'え',
+  'お', 'か', 'き',
+  'く', 'こ', 'さ',
+  'し', 'ち', 'と',
+  'な', 'に', 'ひ',
+  'ふ', 'ほ', 'み',
+  'や', 'わ',
+]
+
+const shippingPrefecturesByInitial = {
+  あ: ['青森県', '秋田県', '愛知県'],
+  い: ['岩手県', '茨城県', '石川県'],
+  え: ['愛媛県'],
+  お: ['大阪府', '岡山県', '大分県', '沖縄県'],
+  か: ['神奈川県', '香川県', '鹿児島県'],
+  き: ['京都府', '岐阜県'],
+  く: ['熊本県', '群馬県'],
+  こ: ['高知県'],
+  さ: ['埼玉県', '佐賀県'],
+  し: ['静岡県', '滋賀県', '島根県'],
+  ち: ['千葉県'],
+  と: ['栃木県', '東京都', '富山県', '鳥取県', '徳島県'],
+  な: ['長野県', '奈良県', '長崎県'],
+  に: ['新潟県'],
+  ひ: ['兵庫県', '広島県'],
+  ふ: ['福島県', '福井県', '福岡県'],
+  ほ: ['北海道'],
+  み: ['宮城県', '三重県', '宮崎県'],
+  や: ['山形県', '山梨県', '山口県'],
+  わ: ['和歌山県'],
+}
+
+const shippingPrefectureRegion = {
+  北海道: '北海道・沖縄',
+  青森県: '遠距離',
+  岩手県: '遠距離',
+  宮城県: '遠距離',
+  秋田県: '遠距離',
+  山形県: '遠距離',
+  福島県: '遠距離',
+  茨城県: '中距離',
+  栃木県: '中距離',
+  群馬県: '中距離',
+  埼玉県: '中距離',
+  千葉県: '中距離',
+  東京都: '中距離',
+  神奈川県: '中距離',
+  山梨県: '中距離',
+  新潟県: '中距離',
+  長野県: '中距離',
+  富山県: '近距離',
+  石川県: '近距離',
+  福井県: '近距離',
+  岐阜県: '近距離',
+  静岡県: '近距離',
+  愛知県: '近距離',
+  三重県: '近距離',
+  滋賀県: '近距離',
+  京都府: '近距離',
+  大阪府: '近距離',
+  兵庫県: '近距離',
+  奈良県: '近距離',
+  和歌山県: '近距離',
+  鳥取県: '近距離',
+  島根県: '近距離',
+  岡山県: '近距離',
+  広島県: '近距離',
+  山口県: '近距離',
+  徳島県: '中距離',
+  香川県: '中距離',
+  愛媛県: '中距離',
+  高知県: '中距離',
+  福岡県: '中距離',
+  佐賀県: '中距離',
+  長崎県: '中距離',
+  熊本県: '中距離',
+  大分県: '中距離',
+  宮崎県: '中距離',
+  鹿児島県: '中距離',
+  沖縄県: '北海道・沖縄',
+}
+
 function loadStorage(key, fallback) {
   try {
     const saved = localStorage.getItem(key)
@@ -215,6 +279,49 @@ function normalizeCategories(categories) {
     return categories
   }
 
+  const migratedCategories = categories.map((category) => ({
+    ...category,
+    items: Array.isArray(category.items)
+      ? category.items.map((product) => {
+          if (category.id === 4 && product?.id === 999) {
+            return {
+              ...product,
+              id: 994,
+              name: '994_送料',
+            }
+          }
+
+          if (category.id === 4) {
+            const shippingNameMap = {
+              301: '901_近距離',
+              302: '902_中距離',
+              303: '901_近距離',
+              304: '902_中距離',
+              305: '905_遠距離',
+              306: '906_北海道・沖縄',
+              994: '994_送料',
+            }
+
+            if (shippingNameMap[product?.id]) {
+              return {
+                ...product,
+                id: Number(product.id) === 303
+                  ? 301
+                  : Number(product.id) === 304
+                    ? 302
+                    : product.id,
+                name: shippingNameMap[product.id],
+              }
+            }
+          }
+
+          return product
+        })
+      : [],
+  }))
+
+  categories = migratedCategories
+
   const packingCodes = {
     401: '971_紙袋 小',
     402: '972_紙袋 大',
@@ -232,7 +339,30 @@ function normalizeCategories(categories) {
   return categories.map((category) => ({
     ...category,
     items: Array.isArray(category.items)
-      ? category.items.map((product) => {
+      ? category.id === 4
+        ? category.items
+            .map((product) => {
+              if (product?.id === 301) {
+                return { ...product, name: '901_近距離' }
+              }
+              if (product?.id === 302) {
+                return { ...product, name: '902_中距離' }
+              }
+              if (product?.id === 305) {
+                return { ...product, name: '905_遠距離' }
+              }
+              if (product?.id === 306) {
+                return { ...product, name: '906_北海道・沖縄' }
+              }
+              if (product?.id === 994) {
+                return { ...product, name: '994_送料' }
+              }
+              return product
+            })
+            .filter((product, index, items) =>
+              items.findIndex((item) => item?.id === product?.id) === index
+            )
+        : category.items.map((product) => {
           if (category.id === 5 && packingCodes[product?.id]) {
             return {
               ...product,
@@ -317,57 +447,63 @@ function getProductCode(product) {
   }
 
   const rawName = String(product.name || '')
-  const match = rawName.match(/^(\d{3})_/)
+  const match = rawName.match(/(\d{3})/)
 
   return match ? match[1] : ''
 }
 
-function getProductImage(product) {
-  if (!product || String(product.id || '').startsWith('shipping-')) {
-    return null
-  }
-
-
-  const code = getProductCode(product)
-
-  // 001「味の宴」は、以前の保存データに古いimage情報が残っていても、
-  // 商品番号001の画像ではなく、登録済みの味の宴用画像候補へ進めるようにします。
-  // 001以外の商品は、これまでどおり商品自身に設定されたimageを最優先します。
-  if (code !== '001' && product.image) {
-    return product.image
-  }
-
-  return code ? `/products/${code}.png` : null
-}
-
 function getProductImageCandidates(product) {
-  if (!product || String(product.id || '').startsWith('shipping-')) {
+  if (!product) {
     return []
   }
 
+  // 送料の注文項目は商品番号が名前に含まれないため、994.pngを使います。
+  if (String(product.id || '').startsWith('shipping-')) {
+    return ['/products/994.png']
+  }
+
+  // 割れおかき(801～808)は、商品IDから画像番号を直接決めます。
+  // 商品名やlocalStorageに残っている古いimage情報に影響されず、
+  // 501～508 → 801～808 の対応で画像を確実に読み込みます。
+  const productIdToImageCode = {
+    501: '801',
+    502: '802',
+    503: '803',
+    504: '804',
+    505: '805',
+    506: '806',
+    507: '807',
+    508: '808',
+  }
+
+  const directImageCode = productIdToImageCode[Number(product.id)]
+
+  if (directImageCode) {
+    return [
+      `/products/${directImageCode}.png`,
+      `/products/${directImageCode}.jpg`,
+      `/products/${directImageCode}.jpeg`,
+      `/products/${directImageCode}.webp`,
+    ]
+  }
 
   const code = getProductCode(product)
-
-  // 001「味の宴」は古いimage情報がlocalStorageに残っていても、
-  // 下記の画像候補を順番に試せるようにします。
-  // 001以外の商品は、これまでどおり設定済みimageを最初に使用します。
-  if (code !== '001' && product.image) {
-    return [product.image]
-  }
 
   if (!code) {
     return []
   }
 
+  // その他の商品は、これまでどおり個別画像を最初に試します。
+  // 見つからない場合は商品番号の画像を順番に試します。
   const candidates = [
+    ...(product.image ? [product.image] : []),
     `/products/${code}.png`,
     `/products/${code}.jpg`,
     `/products/${code}.jpeg`,
+    `/products/${code}.webp`,
   ]
 
-  // 001「味の宴」は、画像ファイル名が商品番号ではなく
-  // 「味の宴.png」や既存のutageSS.jpgになっている場合にも表示できるようにします。
-  // 商品番号画像が存在する場合は、これまでどおり商品番号画像を最初に使用します。
+  // 001だけは以前から使用している画像名も候補に残します。
   if (code === '001') {
     candidates.push('/products/味の宴.png')
     candidates.push('/products/utageSS.jpg')
@@ -377,7 +513,25 @@ function getProductImageCandidates(product) {
     candidates.push('/utageSS(2).jpg')
   }
 
-  return candidates
+  return [...new Set(candidates)]
+}
+
+function getProductImage(product) {
+  return getProductImageCandidates(product)[0] || null
+}
+
+function handleProductImageError(event, candidates) {
+  const image = event.currentTarget
+  const currentIndex = Number(image.dataset.imageIndex || 0)
+  const nextIndex = currentIndex + 1
+
+  if (nextIndex >= candidates.length) {
+    image.style.display = 'none'
+    return
+  }
+
+  image.dataset.imageIndex = String(nextIndex)
+  image.src = candidates[nextIndex]
 }
 
 function getProductDisplay(product) {
@@ -388,22 +542,28 @@ function getProductDisplay(product) {
   const rawName = String(product.name || '')
 
   if (String(product.id || '').startsWith('shipping-')) {
-    const shippingMatch = rawName.match(/^送料\s+(.+?)(\([^)]*\)|（[^）]*）)\s+(.+)$/)
+    // 送料だけは、注文内容確認画面の通常商品と同じ表示位置を使います。
+    // 商品番号の位置には「送料」、商品名の位置には選択した都道府県を表示します。
+    // 送料の地域名ではなく、実際に選択した都道府県1つだけを表示します。
+    // その下には選択した個数・組み合わせのボタン名を1行で表示します。
+    const shippingMatch = rawName.match(/^送料\s+(.+?)\s+([\s\S]+)$/)
 
     if (shippingMatch) {
       return {
-        code: '',
-        label: '送料 ' + shippingMatch[1],
-        name: shippingMatch[2],
-        subName: shippingMatch[3],
+        code: '送料',
+        label: '',
+        name: shippingMatch[1],
+        subName: '',
+        shippingOption: shippingMatch[2],
       }
     }
 
     return {
-      code: '',
+      code: '送料',
       label: '',
-      name: rawName,
+      name: rawName.replace(/^送料\s*/, ''),
       subName: '',
+      shippingOption: '',
     }
   }
 
@@ -418,6 +578,14 @@ function getProductDisplay(product) {
     : rawName
 
   let label = ''
+
+  const isHiddenCodeProduct =
+    code === '994' ||
+    ['801', '802', '803', '804', '805', '806', '807', '808'].includes(code)
+
+  if (isHiddenCodeProduct) {
+    label = ''
+  }
 
   const spaceMatch = displayName.match(/^(\S+)[\s　]+(.+)$/)
 
@@ -513,30 +681,15 @@ function renderOrderItemDisplay(item) {
   const isShipping = String(item?.id || '').startsWith('shipping-')
   if (!isShipping) return display
 
-  const raw = String(item?.name || '')
-  const match = raw.match(/^送料\s+中部\s+(愛知・石川・岐阜・静岡・富山・福井・三重|長野・新潟)\s+(.+)$/)
-  if (match) {
-    if (match[1].includes('愛知')) {
-      return {
-        ...display,
-        code: '',
-        label: '送料 中部',
-        name: '愛知・石川・岐阜・静岡',
-        subName: '富山・福井・三重',
-        shippingOption: match[2],
-      }
-    }
-    return {
-      ...display,
-      code: '',
-      label: '送料 中部',
-      name: '長野・新潟',
-      subName: '',
-      shippingOption: match[2],
-    }
+  // 送料は地域名を表示せず、選択した都道府県だけをそのまま表示します。
+  // 中部（愛知・石川・岐阜・静岡・富山・福井・三重）でも、
+  // 「愛知県」など実際に選択した1つの都道府県だけになります。
+  // 商品番号の位置には「送料」を表示し、都道府県の下に送料の選択名を表示します。
+  return {
+    ...display,
+    code: '送料',
+    label: '',
   }
-
-  return display
 }
 
 function App() {
@@ -575,6 +728,12 @@ function App() {
       {},
     ),
   )
+
+  const [selectedShippingInitial, setSelectedShippingInitial] =
+    useState(null)
+
+  const [selectedShippingPrefecture, setSelectedShippingPrefecture] =
+    useState(null)
 
   const [selectedShippingRegion, setSelectedShippingRegion] =
     useState(null)
@@ -641,12 +800,6 @@ function App() {
     0,
   )
 
-  useEffect(() => {
-    if (orderScrollRef.current) {
-      orderScrollRef.current.scrollTop =
-        orderScrollRef.current.scrollHeight
-    }
-  }, [order])
 
   // --------------------------------------------------
 // 通常商品を注文内容へ追加する処理
@@ -762,7 +915,7 @@ function confirmOrder() {
 
     setLatestAddedProduct(null)
 
-    setSelectedShippingRegion(null)
+    resetShippingSelection()
 
     setScreen('order')
   }
@@ -781,6 +934,22 @@ function confirmOrder() {
         (item) => item.id !== id,
       ),
     )
+  }
+
+  function clearAllHistory() {
+    if (orderHistory.length === 0) {
+      return
+    }
+
+    if (
+      !window.confirm(
+        '履歴をすべて削除しますか？',
+      )
+    ) {
+      return
+    }
+
+    setOrderHistory([])
   }
 
   // --------------------------------------------------
@@ -848,7 +1017,7 @@ function changeCategory(
       categories[nextIndex].id,
     )
 
-    setSelectedShippingRegion(null)
+    resetShippingSelection()
 
     setTimeout(() => {
       setSlideDirection('')
@@ -900,15 +1069,41 @@ function changeCategory(
     }
   }
 
-  function selectShippingRegion(
-    region,
-  ) {
-    setSelectedShippingRegion(
-      region,
-    )
+  // --------------------------------------------------
+  // 送料の1段階目「頭文字」を選択する処理
+  // --------------------------------------------------
+  // ・頭文字を保存する
+  // ・都道府県と送料地域の古い選択状態を解除する
+  // --------------------------------------------------
+  function selectShippingInitial(initial) {
+    setSelectedShippingInitial(initial)
+    setSelectedShippingPrefecture(null)
+    setSelectedShippingRegion(null)
   }
 
   // --------------------------------------------------
+  // 送料の2段階目「都道府県」を選択する処理
+  // --------------------------------------------------
+  // ・都道府県を保存する
+  // ・その都道府県に対応する従来の送料地域を取得する
+  // --------------------------------------------------
+  function selectShippingPrefecture(prefecture) {
+    const region = shippingPrefectureRegion[prefecture] || null
+
+    setSelectedShippingPrefecture(prefecture)
+    setSelectedShippingRegion(region)
+  }
+
+  // --------------------------------------------------
+  // 送料選択を最初の頭文字選択まで戻す処理
+  // --------------------------------------------------
+  function resetShippingSelection() {
+    setSelectedShippingInitial(null)
+    setSelectedShippingPrefecture(null)
+    setSelectedShippingRegion(null)
+  }
+
+// --------------------------------------------------
 // 選択した送料を注文内容へ追加する処理
 // --------------------------------------------------
 // ・1段階目で選択した地域と2段階目で選択した個数から送料商品を作る
@@ -917,30 +1112,24 @@ function changeCategory(
 // ・追加後は地域選択状態を解除し、次の送料を選べる状態に戻す
 // ・上部の「追加：送料 ...」表示も更新する
 // --------------------------------------------------
-function addShippingToOrder(
-    option,
-  ) {
+function addShippingToOrder(option) {
     const shippingProduct = {
-      id: `shipping-${option.id}`,
-      name: `送料 ${selectedShippingRegion} ${option.name}`,
+      id: `shipping-${selectedShippingPrefecture}-${option.id}`,
+      name: `送料 ${selectedShippingPrefecture} ${option.name}`,
       price: option.price,
     }
 
     setOrder((current) => {
       const existing = current.find(
-        (item) =>
-          item.id ===
-          shippingProduct.id,
+        (item) => item.id === shippingProduct.id,
       )
 
       if (existing) {
         return current.map((item) =>
-          item.id ===
-          shippingProduct.id
+          item.id === shippingProduct.id
             ? {
                 ...item,
-                quantity:
-                  item.quantity + 1,
+                quantity: item.quantity + 1,
               }
             : item,
         )
@@ -956,20 +1145,17 @@ function addShippingToOrder(
     })
 
     const existing = order.find(
-      (item) =>
-        item.id ===
-        shippingProduct.id,
+      (item) => item.id === shippingProduct.id,
     )
 
     setLatestAddedProduct({
       name: shippingProduct.name,
-      quantity:
-        existing?.quantity
-          ? existing.quantity + 1
-          : 1,
+      quantity: existing?.quantity
+        ? existing.quantity + 1
+        : 1,
     })
 
-    setSelectedShippingRegion(null)
+    resetShippingSelection()
   }
 
   function clearCategoryLongPress() {
@@ -1128,7 +1314,7 @@ function handleCategoryPointerMove(event) {
 function selectCategory(id) {
     setSelectedCategory(id)
 
-    setSelectedShippingRegion(null)
+    resetShippingSelection()
 
     setSlideDirection('')
   }
@@ -1290,80 +1476,163 @@ function selectCategory(id) {
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
           >
-            {!selectedShippingRegion ? (
+            {!selectedShippingInitial ? (
               <>
                 <div className="shipping-title">
-                  地域を選択
+                  都道府県の頭文字を選択
                 </div>
 
-                <div className="shipping-region-grid">
-                  {Object.keys(
-                    shippingOptions,
-                  ).map((region) => (
-                    <button
-                      key={region}
-                      className="shipping-region-button"
-                      onClick={() =>
-                        selectShippingRegion(
-                          region,
-                        )
-                      }
+                <div className="shipping-initial-groups">
+                  {[
+                    {
+                      label: 'あ行',
+                      initials: ['あ', 'い', 'え', 'お'],
+                    },
+                    {
+                      label: 'か行',
+                      initials: ['か', 'き', 'く', 'こ'],
+                    },
+                    {
+                      label: 'さ行',
+                      initials: ['さ', 'し'],
+                    },
+                    {
+                      label: 'た行',
+                      initials: ['ち', 'と'],
+                    },
+                    {
+                      label: 'な行',
+                      initials: ['な', 'に'],
+                    },
+                    {
+                      label: 'は行',
+                      initials: ['ひ', 'ふ', 'ほ'],
+                    },
+                    {
+                      label: 'ま・や・わ行',
+                      initials: ['み', 'や', 'わ'],
+                    },
+                  ].map((group) => (
+                    <div
+                      key={group.label}
+                      className="shipping-initial-group"
                     >
-                      {renderShippingRegionName(region)}
-                    </button>
+                      <div className="shipping-initial-group-title">
+                        {group.label}
+                      </div>
+
+                      <div className="shipping-initial-buttons">
+                        {group.initials.map((initial) => (
+                          <button
+                            key={initial}
+                            type="button"
+                            className="shipping-initial-button"
+                            onClick={() => selectShippingInitial(initial)}
+                          >
+                            {initial}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
                   ))}
                 </div>
               </>
-            ) : (
+            ) : !selectedShippingPrefecture ? (
               <>
-                <div className="shipping-selected-region">
-                  {renderShippingRegionName(selectedShippingRegion)}
-                </div>
-
                 <div className="shipping-title">
-                  個数を選択
+                  都道府県を選択
                 </div>
 
-                <div className="shipping-options-grid">
-                  {shippingOptions[
-                    selectedShippingRegion
-                  ].map(
-                    (option) => (
-                      <button
-                        key={
-                          option.id
-                        }
-                        className="shipping-option-button"
-                        onClick={() =>
-                          addShippingToOrder(
-                            option,
-                          )
-                        }
-                      >
-                        <span className="shipping-option-name">
-                          {
-                            option.name
-                          }
-                        </span>
+                <div className="shipping-selected-initial">
+                  {selectedShippingInitial} から選択
+                </div>
 
-                        <span className="shipping-option-price">
-                          ¥
-                          {option.price.toLocaleString()}
-                        </span>
-                      </button>
-                    ),
+                <div className="shipping-prefecture-grid">
+                  {shippingPrefecturesByInitial[selectedShippingInitial].map(
+                    (prefecture) => {
+                      const prefectures =
+                        shippingPrefecturesByInitial[selectedShippingInitial]
+
+                      const firstKanji = prefecture.charAt(0)
+                      const sameFirstKanjiCount = prefectures.filter(
+                        (item) => item.charAt(0) === firstKanji,
+                      ).length
+
+                      return (
+                        <button
+                          key={prefecture}
+                          type="button"
+                          className="shipping-prefecture-button"
+                          onClick={() =>
+                            selectShippingPrefecture(prefecture)
+                          }
+                        >
+                          {sameFirstKanjiCount > 1 ? (
+                            <>
+                              <span>{prefecture.charAt(0)}</span>
+                              <span className="shipping-prefecture-distinct">
+                                {prefecture.charAt(1)}
+                              </span>
+                              <span>{prefecture.slice(2)}</span>
+                            </>
+                          ) : (
+                            prefecture
+                          )}
+                        </button>
+                      )
+                    },
                   )}
                 </div>
 
                 <button
+                  type="button"
                   className="shipping-back-button"
-                  onClick={() =>
-                    setSelectedShippingRegion(
-                      null,
-                    )
-                  }
+                  onClick={() => {
+                    setSelectedShippingInitial(null)
+                    setSelectedShippingPrefecture(null)
+                    setSelectedShippingRegion(null)
+                  }}
                 >
-                  地域選択に戻る
+                  頭文字選択に戻る
+                </button>
+              </>
+            ) : (
+              <>
+                <div className="shipping-title">
+                  個数を選択
+                </div>
+
+                <div className="shipping-selected-prefecture">
+                  {selectedShippingPrefecture}
+                </div>
+
+                <div className="shipping-options-grid">
+                  {shippingOptions[selectedShippingRegion].map((option) => (
+                    <button
+                      key={option.id}
+                      className="shipping-option-button"
+                      onClick={() => addShippingToOrder(option)}
+                    >
+                      <span className="shipping-option-name">
+                        {option.name}
+                      </span>
+
+                      <span className="shipping-option-price">
+                        ¥{option.price.toLocaleString()}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+
+                <button
+                  type="button"
+                  className="shipping-back-button"
+                  onClick={() => {
+                    setSelectedShippingPrefecture(null)
+                    setSelectedShippingRegion(null)
+                  }}
+                >
+                  都道府県選択に戻る
                 </button>
               </>
             )}
@@ -1397,7 +1666,8 @@ function selectCategory(id) {
               {currentCategory?.items.map(
                 (product) => {
                   const isSoldOut = !!soldOut[product.id]
-                  const productImage = getProductImage(product)
+                  const productImageCandidates = getProductImageCandidates(product)
+                  const productImage = productImageCandidates[0] || null
 
                   return (
                     <button
@@ -1415,18 +1685,12 @@ function selectCategory(id) {
                           className="menu-item-image"
                           src={productImage}
                           alt=""
-                          onError={(event) => {
-                            const candidates = getProductImageCandidates(product)
-                            const currentIndex = Number(event.currentTarget.dataset.imageIndex || '0')
-                            const nextIndex = currentIndex + 1
-
-                            if (nextIndex < candidates.length) {
-                              event.currentTarget.dataset.imageIndex = String(nextIndex)
-                              event.currentTarget.src = candidates[nextIndex]
-                            } else {
-                              event.currentTarget.style.display = 'none'
-                            }
-                          }}
+                          onError={(event) =>
+                            handleProductImageError(
+                              event,
+                              productImageCandidates,
+                            )
+                          }
                         />
                       ) : null}
 
@@ -1526,18 +1790,12 @@ function selectCategory(id) {
                     className="order-item-image"
                     src={getProductImage(item)}
                     alt=""
-                    onError={(event) => {
-                      const candidates = getProductImageCandidates(item)
-                      const currentIndex = Number(event.currentTarget.dataset.imageIndex || '0')
-                      const nextIndex = currentIndex + 1
-
-                      if (nextIndex < candidates.length) {
-                        event.currentTarget.dataset.imageIndex = String(nextIndex)
-                        event.currentTarget.src = candidates[nextIndex]
-                      } else {
-                        event.currentTarget.style.display = 'none'
-                      }
-                    }}
+                    onError={(event) =>
+                      handleProductImageError(
+                        event,
+                        getProductImageCandidates(item),
+                      )
+                    }
                   />
                 ) : (
                   <div className="order-item-image-placeholder" aria-hidden="true" />
@@ -1570,7 +1828,15 @@ function selectCategory(id) {
                             </span>
                           )}
                           {display.shippingOption && (
-                            <span className="order-item-shipping-option">
+                            <span
+                              className={
+                                String(display.shippingOption).length >= 10
+                                  ? 'order-item-shipping-option order-item-shipping-option-long'
+                                  : String(display.shippingOption).length >= 7
+                                    ? 'order-item-shipping-option order-item-shipping-option-medium'
+                                    : 'order-item-shipping-option'
+                              }
+                            >
                               {display.shippingOption}
                             </span>
                           )}
@@ -1588,33 +1854,35 @@ function selectCategory(id) {
                   ).toLocaleString()}
                 </div>
 
-                <div className="quantity-controls">
-                  <button
-                    onClick={() =>
-                      changeQuantity(
-                        item.id,
-                        -1,
-                      )
-                    }
-                  >
-                    −
-                  </button>
+                {!String(item.id || '').startsWith('shipping-') && (
+                  <div className="quantity-controls">
+                    <button
+                      onClick={() =>
+                        changeQuantity(
+                          item.id,
+                          -1,
+                        )
+                      }
+                    >
+                      −
+                    </button>
 
-                  <span>
-                    {item.quantity}
-                  </span>
+                    <span>
+                      {item.quantity}
+                    </span>
 
-                  <button
-                    onClick={() =>
-                      changeQuantity(
-                        item.id,
-                        1,
-                      )
-                    }
-                  >
-                    ＋
-                  </button>
-                </div>
+                    <button
+                      onClick={() =>
+                        changeQuantity(
+                          item.id,
+                          1,
+                        )
+                      }
+                    >
+                      ＋
+                    </button>
+                  </div>
+                )}
               </div>
             ))
           )}
@@ -1645,6 +1913,15 @@ function selectCategory(id) {
   function renderHistoryScreen() {
     return (
       <main className="history">
+        <button
+          type="button"
+          className="history-clear-all"
+          onClick={clearAllHistory}
+          disabled={orderHistory.length === 0}
+        >
+          履歴を全削除
+        </button>
+
         {orderHistory.length === 0 ? (
           <div className="empty-history">
             履歴はありません

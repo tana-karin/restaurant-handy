@@ -459,6 +459,23 @@ button:disabled {
   white-space: nowrap;
 }
 
+/* =========================
+   画像がない商品の場合
+========================= */
+
+.menu-item:not(:has(.menu-item-image)) {
+  justify-content: space-between;
+}
+
+.menu-item:not(:has(.menu-item-image))
+  .menu-item-name {
+  margin-top: 2px;
+}
+
+.menu-item:not(:has(.menu-item-image))
+  .menu-item-price {
+  margin-bottom: 2px;
+}
 
 /* =========================
    品切れ商品
@@ -1041,6 +1058,8 @@ button:disabled {
   border-radius: 7px;
 
   background: #fff;
+
+  color: #222;
 
   font-size: 16px;
 
@@ -1861,4 +1880,358 @@ button:disabled {
     padding-right: 1px;
     font-size: 9px;
   }
+}
+
+
+/* ==========================================
+   送料：都道府県の頭文字選択
+   3列×7行、20個のボタンを表示します。
+   ========================================== */
+.shipping-initial-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(7, minmax(0, 1fr));
+  gap: 8px;
+  flex: 1;
+  min-height: 0;
+}
+
+.shipping-initial-button {
+  min-height: 48px;
+  border: 1px solid #fed7aa;
+  border-radius: 10px;
+  background: #fff;
+  color: #333;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.shipping-initial-button:active {
+  background: #fff7ed;
+  border-color: #f97316;
+}
+
+.shipping-selected-initial,
+.shipping-selected-prefecture {
+  margin-bottom: 8px;
+  padding: 8px;
+  border-radius: 8px;
+  background: #fff7ed;
+  color: #f97316;
+  font-size: 17px;
+  font-weight: 800;
+  text-align: center;
+}
+
+/* ==========================================
+   送料：都道府県選択
+   ========================================== */
+.shipping-prefecture-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  overflow-y: auto;
+}
+
+.shipping-prefecture-button {
+  min-height: 58px;
+  padding: 8px;
+  border: 1px solid #fed7aa;
+  border-radius: 10px;
+  background: #fff;
+  color: #333;
+  font-size: 19px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.shipping-prefecture-button:active {
+  background: #fff7ed;
+  border-color: #f97316;
+}
+
+/*
+ * 同じ最初の漢字を持つ都道府県が複数ある場合、
+ * 区別するため2文字目だけを大きな赤字で表示します。
+ */
+.shipping-prefecture-distinct {
+  color: #dc2626;
+  font-size: 1.55em;
+  font-weight: 900;
+  line-height: 1;
+  margin: 0 1px;
+}
+
+/* =========================
+   送料：3段階選択
+   ========================= */
+
+.shipping-initial-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(7, 1fr);
+  gap: 8px;
+  padding: 10px;
+  flex: 1;
+}
+
+.shipping-initial-button {
+  min-height: 48px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #fff;
+  color: #222;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.shipping-initial-button:active {
+  background: #fff7ed;
+  border-color: #f97316;
+}
+
+.shipping-selected-initial {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 4px 0 8px;
+}
+
+.shipping-prefecture-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.shipping-prefecture-button {
+  min-height: 58px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #fff;
+  color: #222;
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.shipping-prefecture-button:active {
+  background: #fff7ed;
+  border-color: #f97316;
+}
+
+.shipping-prefecture-distinct {
+  color: #dc2626;
+  font-size: 1.55em;
+  font-weight: 800;
+  line-height: 1;
+  margin: 0 1px;
+}
+
+.shipping-selected-prefecture {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+  padding: 4px 0 10px;
+}
+
+
+/* =========================
+   送料：個数選択の最終調整
+   ========================= */
+.shipping-options-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.shipping-option-button {
+  width: 100%;
+  height: 180px;
+  min-height: 180px;
+  max-height: 180px;
+  overflow: hidden;
+}
+
+.shipping-option-name {
+  display: block;
+  width: 100%;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  text-align: center;
+  line-height: 1.15;
+  font-size: 17px;
+  font-weight: 800;
+}
+
+/* 注文内容：送料の都道府県名の下も改行表示する。
+   送料カード自体のサイズは変更しない。 */
+.order-item-shipping .order-item-name-text {
+  white-space: normal;
+  overflow: hidden;
+  line-height: 1.15;
+}
+
+.order-item-shipping .order-item-name-text > span:first-child {
+  display: block;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.order-item-shipping .order-item-shipping-option {
+  display: block;
+  width: 100%;
+  margin-top: 3px;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  line-height: 1.15;
+}
+
+
+/* =========================
+   履歴：最上部に全削除ボタン
+   ※既存の履歴表示・各履歴の削除ボタンは変更しない
+========================= */
+.history-clear-all {
+  width: 100%;
+  height: 44px;
+  margin: 0 0 10px;
+  border: 1px solid #f97316;
+  border-radius: 8px;
+  background: #fff7ed;
+  color: #c2410c;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.history-clear-all:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+/* =========================
+   送料：都道府県の頭文字選択
+   以前の「行見出し＋頭文字ボタン」の表示に戻す
+   ※既存のボタンサイズ・色は変更しない
+========================= */
+.shipping-initial-groups {
+  flex: 1;
+  min-height: 0;
+  padding: 4px 10px 10px;
+  overflow-y: auto;
+}
+
+.shipping-initial-group {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.shipping-initial-group:last-child {
+  margin-bottom: 0;
+}
+
+.shipping-initial-group-title {
+  margin-bottom: 4px;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.1;
+  color: #222;
+}
+
+.shipping-initial-buttons {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+/* =========================
+   注文内容：送料をコンパクトに表示
+   ※送料内容は省略せず、全行表示する
+========================= */
+.order-item-shipping .order-item-name-text > span:first-child {
+  display: block;
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1.05;
+  color: #222;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.order-item-shipping .order-item-shipping-option {
+  display: block;
+  width: 100%;
+  margin-top: 1px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.0;
+  color: #222;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* 送料の個数調整ボタンは通常商品と同じサイズのまま、
+   送料カードの2段目に置かず、内容と同じ高さの範囲で下側に寄せる。 */
+.order-item-shipping .order-item-info {
+  padding-bottom: 34px;
+}
+
+.order-item-shipping .quantity-controls {
+  grid-column: 2 / 4;
+  grid-row: 2;
+  align-self: end;
+  justify-content: flex-end;
+  z-index: 2;
+}
+
+
+/* =========================
+   今回の変更：送料頭文字画面
+   ・行見出しを左詰め
+   ・全7行をスクロールなしで表示
+========================= */
+.shipping-initial-groups {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 2px 0 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.shipping-initial-group {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.shipping-initial-group-title {
+  margin: 0 0 3px;
+  padding: 0;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1;
+  color: #222;
+  text-align: left;
+}
+
+.shipping-initial-buttons {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+}
+
+/* =========================
+   今回の変更：注文確認画面の送料
+   送料にも通常商品と同じ個数変更ボタンを表示し、右下に配置する
+========================= */
+.order-item-shipping .order-item-info {
+  padding-bottom: 0;
 }
