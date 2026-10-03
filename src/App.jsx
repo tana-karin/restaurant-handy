@@ -800,6 +800,12 @@ function App() {
     0,
   )
 
+  useEffect(() => {
+    if (orderScrollRef.current) {
+      orderScrollRef.current.scrollTop =
+        orderScrollRef.current.scrollHeight
+    }
+  }, [order])
 
   // --------------------------------------------------
 // 通常商品を注文内容へ追加する処理
@@ -1854,8 +1860,7 @@ function selectCategory(id) {
                   ).toLocaleString()}
                 </div>
 
-                {!String(item.id || '').startsWith('shipping-') && (
-                  <div className="quantity-controls">
+                <div className="quantity-controls">
                     <button
                       onClick={() =>
                         changeQuantity(
@@ -1882,7 +1887,6 @@ function selectCategory(id) {
                       ＋
                     </button>
                   </div>
-                )}
               </div>
             ))
           )}

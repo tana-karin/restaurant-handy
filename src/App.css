@@ -2183,10 +2183,17 @@ button:disabled {
   padding-bottom: 34px;
 }
 
+.order-item-shipping {
+  min-height: 140px;
+}
+
 .order-item-shipping .quantity-controls {
-  grid-column: 2 / 4;
-  grid-row: 2;
-  align-self: end;
+  position: absolute;
+  right: 10px;
+  bottom: 8px;
+  grid-column: auto;
+  grid-row: auto;
+  align-self: auto;
   justify-content: flex-end;
   z-index: 2;
 }
