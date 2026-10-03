@@ -799,14 +799,6 @@ function App() {
       sum + item.price * item.quantity,
     0,
   )
-
-  useEffect(() => {
-    if (orderScrollRef.current) {
-      orderScrollRef.current.scrollTop =
-        orderScrollRef.current.scrollHeight
-    }
-  }, [order])
-
   // --------------------------------------------------
 // 通常商品を注文内容へ追加する処理
 // --------------------------------------------------
