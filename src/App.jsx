@@ -799,6 +799,14 @@ function App() {
       sum + item.price * item.quantity,
     0,
   )
+    const shippingTotal = order.reduce(
+    (sum, item) =>
+      sum +
+      (String(item.id || '').startsWith('shipping-')
+        ? item.price * item.quantity
+        : 0),
+    0,
+  )
   // --------------------------------------------------
 // 通常商品を注文内容へ追加する処理
 // --------------------------------------------------
@@ -1884,14 +1892,17 @@ function selectCategory(id) {
           )}
         </div>
 
-        <div className="total-row">
-          <span>合計</span>
+        <div className="shipping-total-row">
+  送料合計：{shippingTotal.toLocaleString()} 円
+</div>
 
-          <strong>
-            ¥
-            {totalAmount.toLocaleString()}
-          </strong>
-        </div>
+<div className="total-row">
+  <span>合計</span>
+  <strong>
+    ¥
+    {totalAmount.toLocaleString()}
+  </strong>
+</div>
 
         <button
           className="confirm"
