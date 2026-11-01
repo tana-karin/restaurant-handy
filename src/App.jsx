@@ -887,7 +887,29 @@ function changeQuantity(id, amount) {
         ),
     )
   }
+const editQuantity = (id, currentQuantity) => {
+  const input = window.prompt(
+    '変更後の数量を入力してください',
+    String(currentQuantity),
+  )
 
+  if (input === null) return
+
+  const quantity = Number(input)
+
+  if (!Number.isInteger(quantity) || quantity < 1) {
+    alert('1以上の整数を入力してください')
+    return
+  }
+
+  setOrder((current) =>
+    current.map((item) =>
+      item.id === id
+        ? { ...item, quantity }
+        : item,
+    ),
+  )
+}
   // --------------------------------------------------
 // 現在の注文を確定して履歴へ保存する処理
 // --------------------------------------------------
@@ -1812,7 +1834,12 @@ function selectCategory(id) {
 
                   return (
                     <div className="order-item-info">
-                      <div className="order-item-name">
+                      <div
+  className="order-item-name"
+  onClick={() =>
+    editQuantity(item.id, item.quantity)
+  }
+>
                         <div className="order-item-heading">
                           {display.code && (
                             <span className="order-item-code">
@@ -1892,11 +1919,10 @@ function selectCategory(id) {
           )}
         </div>
 
-        <div className="shipping-total-row">
-  送料合計：{shippingTotal.toLocaleString()} 円
-</div>
-
+        
 <div className="total-row">
+送料合計：{shippingTotal.toLocaleString()} 円
+  <br />
   <span>合計</span>
   <strong>
     ¥
