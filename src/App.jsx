@@ -713,6 +713,8 @@ function App() {
     )
 
   const [order, setOrder] = useState([])
+  const [editingQuantityId, setEditingQuantityId] = useState(null)
+  const [editingQuantityValue, setEditingQuantityValue] = useState('')
 
   const [orderHistory, setOrderHistory] =
     useState(() =>
@@ -753,6 +755,13 @@ function App() {
   const categoryDragMoved = useRef(false)
 
   const orderScrollRef = useRef(null)
+  const quantityEditScrollTopRef = useRef(0)
+
+  useEffect(() => {
+    if (editingQuantityId !== null && orderScrollRef.current) {
+      orderScrollRef.current.scrollTop = quantityEditScrollTopRef.current
+    }
+  }, [editingQuantityId])
 
   const touchStartX = useRef(0)
   const touchStartY = useRef(0)
@@ -888,28 +897,42 @@ function changeQuantity(id, amount) {
     )
   }
 const editQuantity = (id, currentQuantity) => {
-  const input = window.prompt(
-    '変更後の数量を入力してください',
-    String(currentQuantity),
-  )
+  if (editingQuantityId === id) {
+    cancelEditedQuantity()
+    return
+  }
 
-  if (input === null) return
+  if (orderScrollRef.current) {
+    quantityEditScrollTopRef.current = orderScrollRef.current.scrollTop
+  }
+  setEditingQuantityId(id)
+  setEditingQuantityValue(String(currentQuantity))
+}
 
-  const quantity = Number(input)
+function saveEditedQuantity(id, currentQuantity) {
+  const quantity = Number(editingQuantityValue)
 
   if (!Number.isInteger(quantity) || quantity < 1) {
-    alert('1以上の整数を入力してください')
+    window.alert('1以上の整数を入力してください')
+    setEditingQuantityId(null)
+    setEditingQuantityValue('')
     return
   }
 
   setOrder((current) =>
     current.map((item) =>
-      item.id === id
-        ? { ...item, quantity }
-        : item,
+      item.id === id ? { ...item, quantity } : item,
     ),
   )
+  setEditingQuantityId(null)
+  setEditingQuantityValue('')
 }
+
+function cancelEditedQuantity() {
+  setEditingQuantityId(null)
+  setEditingQuantityValue('')
+}
+
   // --------------------------------------------------
 // 現在の注文を確定して履歴へ保存する処理
 // --------------------------------------------------
@@ -1803,132 +1826,141 @@ function selectCategory(id) {
             <div className="empty-order">
               注文はありません
             </div>
-          ) : (
+          ) : 
             order.map((item) => (
-              <div
-                className={
-                  String(item.id || '').startsWith('shipping-')
-                    ? 'order-item order-item-shipping'
-                    : 'order-item'
+  <div
+    className={
+      String(item.id || '').startsWith('shipping-')
+        ? 'order-item order-item-shipping'
+        : 'order-item'
+    }
+    key={item.id}
+  >
+    {getProductImage(item) ? (
+      <img
+        className="order-item-image"
+        src={getProductImage(item)}
+        alt=""
+        onError={(event) =>
+          handleProductImageError(
+            event,
+            getProductImageCandidates(item),
+          )
+        }
+      />
+    ) : (
+      <div className="order-item-image-placeholder" aria-hidden="true" />
+    )}
+
+    {(() => {
+      const display = renderOrderItemDisplay(item)
+
+      return (
+        <div
+          className="order-item-info"
+          style={{ position: 'relative' }}
+        >
+          <button
+            type="button"
+            className="order-item-name"
+            onClick={() => editQuantity(item.id, item.quantity)}
+          >
+            <div className="order-item-heading">
+              {display.code && (
+                <span className="order-item-code">
+                  {display.code}
+                </span>
+              )}
+              {display.label && (
+                <span className="order-item-label">
+                  {display.label}
+                </span>
+              )}
+            </div>
+
+            <div className="order-item-name-text">
+              <span>{display.name}</span>
+              {display.subName && (
+                <span className="order-item-subname">
+                  {display.subName}
+                </span>
+              )}
+              {display.shippingOption && (
+                <span
+                  className={
+                    String(display.shippingOption).length >= 10
+                      ? 'order-item-shipping-option order-item-shipping-option-long'
+                      : String(display.shippingOption).length >= 7
+                        ? 'order-item-shipping-option order-item-shipping-option-medium'
+                        : 'order-item-shipping-option'
+                  }
+                >
+                  {display.shippingOption}
+                </span>
+              )}
+            </div>
+          </button>
+          {editingQuantityId === item.id && (
+            <input
+              type="number"
+              min="1"
+              step="1"
+              className="order-item-quantity-input"
+              aria-label={`${display.name} の数量`}
+              value={editingQuantityValue}
+              onChange={(event) => setEditingQuantityValue(event.target.value)}
+              onBlur={() => saveEditedQuantity(item.id, item.quantity)}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter') {
+                  event.preventDefault()
+                  saveEditedQuantity(item.id, item.quantity)
                 }
-                key={item.id}
-              >
-                {getProductImage(item) ? (
-                  <img
-                    className="order-item-image"
-                    src={getProductImage(item)}
-                    alt=""
-                    onError={(event) =>
-                      handleProductImageError(
-                        event,
-                        getProductImageCandidates(item),
-                      )
-                    }
-                  />
-                ) : (
-                  <div className="order-item-image-placeholder" aria-hidden="true" />
-                )}
-
-                {(() => {
-                  const display = renderOrderItemDisplay(item)
-
-                  return (
-                    <div className="order-item-info">
-                      <div
-  className="order-item-name"
-  onClick={() =>
-    editQuantity(item.id, item.quantity)
-  }
->
-                        <div className="order-item-heading">
-                          {display.code && (
-                            <span className="order-item-code">
-                              {display.code}
-                            </span>
-                          )}
-                          {display.label && (
-                            <span className="order-item-label">
-                              {display.label}
-                            </span>
-                          )}
-                        </div>
-
-                        <div className="order-item-name-text">
-                          <span>{display.name}</span>
-                          {display.subName && (
-                            <span className="order-item-subname">
-                              {display.subName}
-                            </span>
-                          )}
-                          {display.shippingOption && (
-                            <span
-                              className={
-                                String(display.shippingOption).length >= 10
-                                  ? 'order-item-shipping-option order-item-shipping-option-long'
-                                  : String(display.shippingOption).length >= 7
-                                    ? 'order-item-shipping-option order-item-shipping-option-medium'
-                                    : 'order-item-shipping-option'
-                              }
-                            >
-                              {display.shippingOption}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  )
-                })()}
-
-                <div className="order-item-price">
-                  ¥
-                  {(
-                    item.price *
-                    item.quantity
-                  ).toLocaleString()}
-                </div>
-
-                <div className="quantity-controls">
-                    <button
-                      onClick={() =>
-                        changeQuantity(
-                          item.id,
-                          -1,
-                        )
-                      }
-                    >
-                      −
-                    </button>
-
-                    <span>
-                      {item.quantity}
-                    </span>
-
-                    <button
-                      onClick={() =>
-                        changeQuantity(
-                          item.id,
-                          1,
-                        )
-                      }
-                    >
-                      ＋
-                    </button>
-                  </div>
-              </div>
-            ))
+                if (event.key === 'Escape') {
+                  event.preventDefault()
+                  cancelEditedQuantity()
+                }
+              }}
+            />
           )}
         </div>
+      )
+    })()}
 
-        
-<div className="total-row">
-送料合計：{shippingTotal.toLocaleString()} 円
-  <br />
-  <span>合計</span>
-  <strong>
-    ¥
-    {totalAmount.toLocaleString()}
-  </strong>
-</div>
+    <div className="order-item-price">
+      ¥{(item.price * item.quantity).toLocaleString()}
+    </div>
+
+    <div className="quantity-controls">
+      <button
+        type="button"
+        onClick={() => changeQuantity(item.id, -1)}
+      >
+        −
+      </button>
+
+      <span>{item.quantity}</span>
+
+      <button
+        type="button"
+        onClick={() => changeQuantity(item.id, 1)}
+      >
+        ＋
+      </button>
+    </div>
+  </div>
+))}
+
+        </div>
+
+        <div className="total-row">
+          <div className="shipping-total-line">
+            送料合計：{shippingTotal.toLocaleString()} 円
+          </div>
+          <div className="grand-total-line">
+            <span>合計</span>
+            <strong>¥{totalAmount.toLocaleString()}</strong>
+          </div>
+        </div>
 
         <button
           className="confirm"

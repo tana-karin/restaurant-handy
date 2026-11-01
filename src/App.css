@@ -2242,3 +2242,82 @@ button:disabled {
 .order-item-shipping .order-item-info {
   padding-bottom: 0;
 }
+/* 注文確認画面：送料合計と合計を同じ枠内で2行表示 */
+.total-row {
+  height: 96px;
+  min-height: 96px;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: 6px;
+}
+
+.shipping-total-line {
+  width: 100%;
+  font-size: 14px;
+  text-align: right;
+}
+
+.grand-total-line {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.grand-total-line span {
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.grand-total-line strong {
+  color: #f97316;
+  font-size: 30px;
+  font-weight: 900;
+}button.order-item-name {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: center;
+  cursor: pointer;
+}/* 数量変更欄：商品名のすぐ下 */
+.order-item-quantity-input {
+  display: block;
+  box-sizing: border-box;
+  width: 42vw;
+  max-width: 180px;
+  min-width: 0;
+  height: 36px;
+  min-height: 36px;
+  margin-top: 6px;
+  padding: 4px 8px;
+  border: 2px solid #f97316;
+  border-radius: 6px;
+  background: #fff;
+  color: #222;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+/* ＋／−ボタン：送料商品と同じ右下の位置 */
+.order-item .quantity-controls {
+  position: absolute;
+  right: 10px;
+  bottom: 8px;
+  grid-column: auto;
+  grid-row: auto;
+  justify-content: flex-end;
+  gap: 6px;
+  z-index: 2;
+}
+
+/* 商品名は中央揃え */
+button.order-item-name {
+  text-align: center;
+}
